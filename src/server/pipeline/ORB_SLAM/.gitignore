@@ -1,4 +1,5 @@
 build/
 bin/
+lib/
 Data/Example.bag
 Data/ORBvoc.txt
