@@ -9,3 +9,4 @@
 
 export UNKEI_PROJECT_ROOT=$(readlink -m ..)
 export UNKEI_BUILD_ROOT=$UNKEI_PROJECT_ROOT/build
+export UNKEI_EXTERNAL_ROOT=$UNKEI_PROJECT_ROOT/externals
