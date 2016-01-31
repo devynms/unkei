@@ -12,12 +12,16 @@ class EchoClientHandler {
  public:
   EchoClientHandler(uv::ClientSocket* sock)
     : sock(sock) {
-      sock->SetOnRead([=](uv::Buffer buf, bool success) {
+      sock->OnRead([=](uv::Buffer buf, bool success) {
         this->on_read(std::move(buf), success);
       });
 
-      sock->SetOnWrite([=](bool success) {
+      sock->OnWrite([=](bool success) {
         this->on_write(success);
+      });
+
+      sock->OnClose([=]() {
+        delete this;
       });
 
       sock->StartRead();
@@ -32,7 +36,7 @@ class EchoClientHandler {
 
   void on_read(uv::Buffer buf, bool success) {
     if (!success) {
-      delete this;
+      this->sock->StartClose();
       return;
     }
 

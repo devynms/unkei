@@ -85,6 +85,9 @@ class Buffer {
 /// client socket.
 /// Ownership: the object owning the connection to the client is responsible
 /// for closing the connection and disposing of the ClientSocket instance.
+/// Releasing memory: the owning object is responsible for calling StartClose(),
+/// the provided OnClose callback should also free the memory of the
+/// ClientSocket.
 ///
 class ClientSocket {
  friend class ServerSocket;
@@ -94,19 +97,25 @@ class ClientSocket {
   ClientSocket(const ClientSocket&) = delete;
   ClientSocket(ClientSocket&&) = delete;
   ClientSocket& operator=(const ClientSocket&) = delete;
-  virtual ~ClientSocket();
+  virtual ~ClientSocket() = default;
 
-  void SetOnRead(std::function<void(Buffer, bool)> read_cb);
-  void SetOnWrite(std::function<void(bool)> write_cb);
+  void OnRead(std::function<void(Buffer, bool)> read_cb);
+  void OnWrite(std::function<void(bool)> write_cb);
+  void OnClose(std::function<void()> close_cb);
+
   void StartRead();
   void StartWrite(Buffer buf);
+  void StartClose();
+
   void OnWriteDone(int status);
   void OnReadDone(const uv_buf_t* buf, ssize_t nread);
+  void OnCloseDone();
 
  private:
   uv_tcp_t tcp_connection;
   std::function<void(Buffer, bool)> on_read_done;
   std::function<void(bool)> on_write_done;
+  std::function<void()> on_close_done;
 };
 
 } // namespace uv

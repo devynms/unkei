@@ -104,18 +104,19 @@ uv::ClientSocket::ClientSocket(uv::EventLoop * loop) {
   this->tcp_connection.data = (void*) this;
 }
 
-uv::ClientSocket::~ClientSocket() {
-  uv_close((uv_handle_t*) &this->tcp_connection, NULL);
-}
-
 void
-uv::ClientSocket::SetOnRead(std::function<void(Buffer, bool)> read_cb) {
+uv::ClientSocket::OnRead(std::function<void(Buffer, bool)> read_cb) {
   this->on_read_done = read_cb;
 }
 
 void
-uv::ClientSocket::SetOnWrite(std::function<void(bool)> write_cb) {
+uv::ClientSocket::OnWrite(std::function<void(bool)> write_cb) {
   this->on_write_done = write_cb;
+}
+
+void
+uv::ClientSocket::OnClose(std::function<void()> close_cb) {
+  this->on_close_done = close_cb;
 }
 
 extern "C" void alloc_buffer(
@@ -152,6 +153,9 @@ uv::ClientSocket::OnReadDone(const uv_buf_t* buf, ssize_t nread) {
     success = false;
   }
 
+  if (nread == 0) {
+  }
+
   this->on_read_done(Buffer(buf->base, nread), success);
 
   if (buf->base) {
@@ -181,4 +185,20 @@ uv::ClientSocket::OnWriteDone(int status) {
     success = false;
   }
   this->on_write_done(success);
+}
+
+extern "C" void uv_client_on_close(uv_handle_t* handle) {
+  uv::ClientSocket* client = (uv::ClientSocket*) handle->data;
+  client->OnCloseDone();
+}
+
+void
+uv::ClientSocket::StartClose() {
+  uv_close((uv_handle_t*) &this->tcp_connection,
+            uv_client_on_close);
+}
+
+void
+uv::ClientSocket::OnCloseDone() {
+  this->on_close_done();
 }
