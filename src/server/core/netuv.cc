@@ -1,22 +1,7 @@
 #include "netuv.h"
 #include <stdexcept>
 
-#define UNUSED(x) (void)(x)
-
 const int DEFAULT_BACKLOG = 128;
-
-uv::EventLoop::EventLoop() {
-  uv_loop_init(&this->loop);
-}
-
-uv::EventLoop::~EventLoop() {
-  uv_loop_close(&this->loop);
-}
-
-int
-uv::EventLoop::Run() {
-  return uv_run(&this->loop, UV_RUN_DEFAULT);
-}
 
 uv::ServerSocket::ServerSocket(EventLoop* loop,
       std::function<void(ClientSocket*)> cb)
@@ -73,30 +58,6 @@ uv::ServerSocket::OnNewConnection(int status) {
   } else {
     delete client;
   }
-}
-
-uv::Buffer::Buffer(char * buf, ssize_t len) {
-  if (len > 0) {
-    this->buf.reserve(len);
-    for (int i = 0; i < len; i++) {
-      this->buf.push_back(*buf);
-      ++buf;
-    }
-  }
-}
-
-uv::Buffer::Buffer(std::vector<byte>&& buf)
-    : buf(std::move(buf))
-{}
-
-const char *
-uv::Buffer::data() {
-  return (const char*) this->buf.data();
-}
-
-ssize_t
-uv::Buffer::length() const {
-  return this->buf.size();
 }
 
 uv::ClientSocket::ClientSocket(uv::EventLoop * loop) {
@@ -170,7 +131,7 @@ extern "C" void uv_client_on_write_done(uv_write_t *req, int status) {
 }
 
 void
-uv::ClientSocket::StartWrite(Buffer buf) {
+uv::ClientSocket::StartWrite(const Buffer& buf) {
   uv_write_t* req = (uv_write_t*) malloc(sizeof(uv_write_t));
   req->data = (void*) this;
   uv_buf_t wrbuf = uv_buf_init((char *)buf.data(), buf.length());

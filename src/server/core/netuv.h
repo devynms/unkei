@@ -3,35 +3,14 @@
 
 #include <functional>
 #include <vector>
-#include <uv.h>
+
+#include "ccuv.h"
 
 namespace uv{
 
-using byte = unsigned char;
 
-class EventLoop;
 class ServerSocket;
 class ClientSocket;
-
-///
-/// A C++ wrapper class around a uv_loop_t instance representing the main event
-/// loop for the server.
-///
-class EventLoop {
- friend class ServerSocket;
- friend class ClientSocket;
-
- public:
-  EventLoop();
-  EventLoop(const EventLoop& other) = delete;
-  EventLoop(EventLoop&& other) = delete;
-  EventLoop& operator =(const EventLoop&) = delete;
-  virtual ~EventLoop();
-
-  int Run();
- private:
-  uv_loop_t loop;
-};
 
 ///
 /// A C++ wrapper class around a uv_tcp_t instance owning the listening socket
@@ -59,28 +38,6 @@ class ServerSocket {
 };
 
 ///
-/// Object representing a uv_buf_t instance created for reading from and writing
-/// to client sockets.
-/// Ownership: the object owns it's internal buffer, which is disposed on when
-/// it exits scope. Can be moved or can be shared as a const reference.
-///
-class Buffer {
- public:
-  Buffer(char * buf, ssize_t len);
-  Buffer(std::vector<byte>&& buf);
-  Buffer() = default;
-  Buffer(const Buffer&) = default;
-  Buffer(Buffer&&) = default;
-  Buffer& operator=(const Buffer&) = default;
-  virtual ~Buffer() = default;
-
-  const char* data();
-  ssize_t length() const;
- private:
-  std::vector<byte> buf;
-};
-
-///
 /// A C++ wrapper class around a uv_tcp_t instance owning the connection to a
 /// client socket.
 /// Ownership: the object owning the connection to the client is responsible
@@ -104,7 +61,7 @@ class ClientSocket {
   void OnClose(std::function<void()> close_cb);
 
   void StartRead();
-  void StartWrite(Buffer buf);
+  void StartWrite(const Buffer& buf);
   void StartClose();
 
   void OnWriteDone(int status);
