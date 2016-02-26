@@ -5,6 +5,10 @@ uv::File::File(EventLoop* loop, std::string path)
   this->loop = loop;
 }
 
+uv::File::File(EventLoop* loop) {
+  this->loop = loop;
+}
+
 void
 uv::File::OnRead(std::function<void(int read)> read_cb) {
   this->on_read_done = read_cb;
@@ -29,6 +33,7 @@ extern "C"
 void uv_fileuv_file_on_open(uv_fs_t* request) {
   uv::File* file = (uv::File*) request->data;
   file->OpenDone(request->result);
+  uv_fs_req_cleanup(request);
   delete request;
 }
 
@@ -52,6 +57,7 @@ extern "C"
 void uv_fileuv_file_on_write(uv_fs_t* request) {
   uv::File* file = (uv::File*) request->data;
   file->WriteDone(request->result);
+  uv_fs_req_cleanup(request);
   delete request;
 }
 
@@ -73,6 +79,7 @@ extern "C"
 void uv_fileuv_file_on_read(uv_fs_t* request) {
   uv::File* file = (uv::File*) request->data;
   file->ReadDone(request->result);
+  uv_fs_req_cleanup(request);
   delete request;
 }
 
@@ -80,7 +87,7 @@ void
 uv::File::StartRead(Buffer& buf, int offset) {
   uv_fs_t* request = new uv_fs_t;
   request->data = this;
-  uv_buf_t rbuf = uv_buf_init(buf.data(), buf.length());
+  uv_buf_t rbuf = uv_buf_init((char*)buf.data(), buf.length());
   uv_fs_read(this->loop->data(), request, this->handle, &rbuf, 1, offset,
     uv_fileuv_file_on_read);
 }
@@ -94,6 +101,7 @@ extern "C"
 void uv_fileuv_file_on_close(uv_fs_t* request) {
   uv::File* file = (uv::File*) request->data;
   file->CloseDone(request->result);
+  uv_fs_req_cleanup(request);
   delete request;
 }
 
@@ -107,4 +115,10 @@ uv::File::StartClose() {
 void
 uv::File::CloseDone(int status) {
   this->on_close_done((status >= 0));
+}
+
+void
+uv::File::SetPath(std::string path) {
+  // TODO: handle the case in which we try and do things w/o a path
+  this->path = path;
 }

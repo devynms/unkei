@@ -49,9 +49,10 @@ class Buffer {
   virtual ~Buffer() = default;
 
   void write(const byte* bytes, int nbytes);
-  const char* data() const;
-  char* data();
+  const byte* data() const;
+  byte* data();
   ssize_t length() const;
+  byte operator[](int i) const;
  private:
   std::vector<byte> buf;
 };

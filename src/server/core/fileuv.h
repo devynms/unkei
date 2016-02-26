@@ -12,9 +12,12 @@ namespace uv {
 class File {
  public:
   File(EventLoop* loop, std::string path);
+  File(EventLoop* loop);
   File(const File&) = delete;
   File(File&&) = default;
   virtual ~File() = default;
+
+  void SetPath(std::string path);
 
   void OnRead(std::function<void(int read)> read_cb);
   void OnOpen(std::function<void(bool)> open_cb);

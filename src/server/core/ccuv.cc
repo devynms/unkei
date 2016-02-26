@@ -36,14 +36,14 @@ uv::Buffer::Buffer(int reserve)
     : buf(reserve)
 {}
 
-const char *
+const uv::byte *
 uv::Buffer::data() const {
-  return (const char*) this->buf.data();
+  return this->buf.data();
 }
 
-char*
+uv::byte*
 uv::Buffer::data() {
-  return (char*) this->buf.data();
+  return this->buf.data();
 }
 
 ssize_t
@@ -56,4 +56,9 @@ uv::Buffer::write(const byte* bytes, int nbytes) {
   for (int i = 0; i < nbytes; i++) {
     buf[i] = bytes[i];
   }
+}
+
+uv::byte
+uv::Buffer::operator[](int i) const {
+  return buf[i];
 }

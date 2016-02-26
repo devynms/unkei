@@ -52,7 +52,10 @@ class ClientSocket {
  public:
   ClientSocket(EventLoop* loop);
   ClientSocket(const ClientSocket&) = delete;
+
+  // TODO: consider making moves work so handlers can own sockets
   ClientSocket(ClientSocket&&) = delete;
+
   ClientSocket& operator=(const ClientSocket&) = delete;
   virtual ~ClientSocket() = default;
 
