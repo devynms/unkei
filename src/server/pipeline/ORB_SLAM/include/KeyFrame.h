@@ -46,6 +46,9 @@ class KeyFrame
 public:
     KeyFrame(Frame &F, Map* pMap, KeyFrameDatabase* pKFDB);
 
+    // SDPM functions
+    std::vector<float> GetAllPointDepths(int q = 2); //modeled after: float ComputeSceneMedianDepth(int q = 2);
+
     // Pose functions
     void SetPose(const cv::Mat &Rcw,const cv::Mat &tcw);
     void SetPose(const cv::Mat &Tcw);
