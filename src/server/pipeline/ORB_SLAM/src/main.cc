@@ -34,6 +34,7 @@
 #include "LoopClosing.h"
 #include "KeyFrameDatabase.h"
 #include "ORBVocabulary.h"
+#include "ProbabilityMapping.h"
 
 
 #include "Converter.h"
@@ -127,11 +128,14 @@ int main(int argc, char **argv)
     //Initialize the Local Mapping Thread and launch
     ORB_SLAM::LocalMapping LocalMapper(&World);
     boost::thread localMappingThread(&ORB_SLAM::LocalMapping::Run,&LocalMapper);
+    
+    //Initialize probability mapping
+    ProbabilityMapping ProbabilityMapper;
 
     //Initialize the Loop Closing Thread and launch
     ORB_SLAM::LoopClosing LoopCloser(&World, &Database, &Vocabulary);
     boost::thread loopClosingThread(&ORB_SLAM::LoopClosing::Run, &LoopCloser);
-
+    
     //Set pointers between threads
     Tracker.SetLocalMapper(&LocalMapper);
     Tracker.SetLoopClosing(&LoopCloser);
@@ -148,13 +152,32 @@ int main(int argc, char **argv)
         fps=30;
 
     ros::Rate r(fps);
-
+    
+    //int count = 0;
     while (ros::ok())
     {
         FramePub.Refresh();
         MapPub.Refresh();
         Tracker.CheckResetByPublishers();
         r.sleep();
+     /*   count++;
+        if(count%500 == 0){
+            cout << "Loop!\n";
+            vector<ORB_SLAM::KeyFrame*> vpKFs = World.GetAllKeyFrames(); 
+            cv::Mat img = vpKFs[0]->GetImage();
+            ProbabilityMapping::depthHo hypothesisMatrix[img.cols][img.rows];//FIXME 
+              
+            for(size_t i = 0; i <vpKFs.size(); i++)
+            {
+              cout << "We have keyframes!\n";
+              ORB_SLAM::KeyFrame* pKF = vpKFs[i];
+              if(pKF->isBad())
+                  continue;
+              cout << "Mapping...\n";
+              ProbabilityMapper.FirstLoop(pKF,hypothesisMatrix);
+            }
+
+        }*/
     }
 
     // Save keyframe poses at the end of the execution
@@ -182,6 +205,7 @@ int main(int argc, char **argv)
           << " " << q[0] << " " << q[1] << " " << q[2] << " " << q[3] << endl;
 
     }
+    
     f.close();
 
     ros::shutdown();

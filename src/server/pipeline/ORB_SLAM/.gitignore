@@ -1,5 +1,14 @@
 build/
 bin/
-lib/
 Data/Example.bag
 Data/ORBvoc.txt
+Thirdparty/g2o/config.h
+Thirdparty/g2o/lib/*.so
+Thirdparty/DBoW2/lib/*.so
+CMakefiles/
+debug/
+
+!debug/.gitignore
+!debug/CMakeLists.txt
+!debug/src/
+!debug/inc/

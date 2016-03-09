@@ -1,0 +1,8 @@
+prefix=/home/acceber/projects/eecs395/rospkgs/devel
+
+Name: rviz_interceptor
+Description: Description of rviz_interceptor
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/acceber/projects/eecs395/rospkgs/devel/lib 
+Requires: 

@@ -27,7 +27,10 @@
 #include "Tracking.h"
 #include <boost/thread.hpp>
 #include "KeyFrameDatabase.h"
+//#include "ProbabilityMapping.h"
 
+
+class ProbabilityMapping;
 
 namespace ORB_SLAM
 {
@@ -66,6 +69,10 @@ public:
 
     void InterruptBA();
 
+    static cv::Mat ComputeF12(KeyFrame* &pKF1, KeyFrame* &pKF2);
+
+    static cv::Mat SkewSymmetricMatrix(const cv::Mat &v);
+
 protected:
 
     bool CheckNewKeyFrames();
@@ -77,10 +84,6 @@ protected:
 
     void KeyFrameCulling();
 
-    cv::Mat ComputeF12(KeyFrame* &pKF1, KeyFrame* &pKF2);
-
-    cv::Mat SkewSymmetricMatrix(const cv::Mat &v);
-
     void ResetIfRequested();
     bool mbResetRequested;
     boost::mutex mMutexReset;
@@ -89,14 +92,15 @@ protected:
 
     LoopClosing* mpLoopCloser;
     Tracking* mpTracker;
-
+    ProbabilityMapping* mpProbabilityMapper;
+    
     std::list<KeyFrame*> mlNewKeyFrames;
 
     KeyFrame* mpCurrentKeyFrame;
 
     std::list<MapPoint*> mlpRecentAddedMapPoints;
 
-    boost::mutex mMutexNewKFs;    
+   boost::mutex mMutexNewKFs;    
 
     bool mbAbortBA;
 
