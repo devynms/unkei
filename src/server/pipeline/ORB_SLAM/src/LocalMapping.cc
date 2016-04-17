@@ -30,8 +30,8 @@ namespace ORB_SLAM
 
 LocalMapping::LocalMapping(Map *pMap):
     mbResetRequested(false), mpMap(pMap),  mbAbortBA(false), mbStopped(false), mbStopRequested(false), mbAcceptKeyFrames(true)
-{
-}
+  {
+  }
 
 void LocalMapping::SetLoopCloser(LoopClosing* pLoopCloser)
 {
@@ -81,7 +81,25 @@ void LocalMapping::Run()
 
                 // Tracking will see Local Mapping idle
                 if(!CheckNewKeyFrames())
+                {
+                    //cout << "No new keyframes\n";
                     SetAcceptKeyFrames(true);
+
+                    //TODO actually turn this into a Thread
+                  /*  vector<KeyFrame*> vpKFs = mpMap -> GetAllKeyFrames();
+                    ProbabilityMapping::detphHo*** hypothesisMatrix;
+                    vector<ProbabilityMapping::depthHo*>* hypothesisSupport; 
+                    for(size_t i=0; i<vpKFs.size(); i++)
+                    {
+                        cout << "We have keyframes\n";
+                        ORB_SLAM::KeyFrame* pKF = vpKFs[i];
+                        if(pKF->isBad())                      
+                            continue;
+                        cout << "we are doing the Mapping\n";
+                        mpProbabilityMapper -> FirstLoop(pKF,hypothesisMatrix,hypothesisSupport); 
+                    } 
+                    */
+                }
             }
 
             mpLoopCloser->InsertKeyFrame(mpCurrentKeyFrame);
