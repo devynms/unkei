@@ -1,0 +1,38 @@
+%YAML:1.0
+overlap_tracking_th: 0.85
+translational_ratio_th: 0.15
+discretization: 100
+variance: 0.003
+tracking_th: 0.001
+ph_error_th: 0.001
+
+iter_th: 40
+local_maps_number:5
+local_maps_close_number: 1
+distortion: 1
+
+limit_grad: 0.80
+
+
+camera_path:"/image_raw"
+cameraMatrix: !!opencv-matrix
+   rows: 3
+   cols: 3
+   dt: d
+   data: [257.6436996459961, 0.0, 286.65277099609375, 0.0, 376.9067573547363, 240.2546844482422, 0.0, 0.0, 1.0]
+distCoeffs: !!opencv-matrix
+   rows: 5
+   cols: 1
+   dt: d
+   data: [0,0,0,0,0 ]
+
+
+
+calculate_superpixels: 1
+num_cameras_mapping_th: 9
+translational_ratio_th_min: 0.075
+limit_ratio_sing_val : 100
+limit_normalized_residual: 0.30
+matchings_active_search: 3
+
+
