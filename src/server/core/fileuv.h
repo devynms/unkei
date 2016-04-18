@@ -29,6 +29,7 @@ class File {
   void StartWrite(const Buffer& buf, int offset);
   // void StartWrite(const std::vector<Buffer>&);
   void StartClose();
+  void GetSize(std::function<void(uint64_t)> size_cb);
 
   void OpenDone(int status);
   void CloseDone(int status);

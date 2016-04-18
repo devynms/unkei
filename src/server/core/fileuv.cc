@@ -122,3 +122,20 @@ uv::File::SetPath(std::string path) {
   // TODO: handle the case in which we try and do things w/o a path
   this->path = path;
 }
+
+extern "C"
+static void uv_fileuv_on_fstat(uv_fs_t* request)
+{
+  std::function<void(int)> size_cb = (std::function<void(int)>)request->data;
+  uint64_t size = request->statbuf.st_size;
+  delete request;
+  size_cb(size);
+}
+
+void
+uv::File::GetSize(std::function<void(uint64_t)> size_cb)
+{
+  uv_fs_t* request = new uv_fs_t;
+  request->data = size_cb;
+  uv_fs_fstat(this->loop, request, this->handle, uv_fileuv_on_fstat);
+}

@@ -3,21 +3,20 @@
 #include <string.h>
 #include <execinfo.h>
 #include <signal.h>
-#include <unistd.h>
-#include "ClientHandler.h"
+
+#include "ClientJobHandler.h"
+#include "ClientFileHandler.h"
 #include "netuv.h"
 
-const int DEFAULT_PORT = 8575;
+const int JOB_PORT = 43230;
+const int FILE_PORT = 43081;
 
 void bad_handler(int sig) {
   void *array[10];
   size_t size;
 
-  // get void*'s for all entries on the stack
   size = backtrace(array, 10);
-
-  // print out all the frames to stderr
-  fprintf(stderr, "Error: signal %d:\n", sig);
+  fprintf(stderr, "Error: signal %d\n", sig);
   backtrace_symbols_fd(array, size, STDERR_FILENO);
   exit(1);
 }
@@ -27,23 +26,28 @@ int main() {
 
   signal(SIGSEGV, bad_handler);
 
-  int id = 1;
-
   uv::EventLoop loop;
-  uv::ServerSocket server(&loop, [&](uv::ClientSocket* sock) {
-    ClientHandler* handler = new ClientHandler(&loop, sock, id);
+
+  uv::ServerSocket job_server(&loop, [&](uv::ClientSocket* sock) {
+    ClientJobHandler* handler = new ClientJobHandler(&loop, sock);
     UNUSED(handler);
-    id += 1;
   });
 
-  server.Bind("0.0.0.0", DEFAULT_PORT);
-  bool success = server.Listen();
+  uv::ServerSocket file_server(&loop, [&](uv::ClientSocket* sock) {
+    ClientFileHandler* handler = new ClientFileHandler(&loop, sock);
+  });
 
+  job_server.Bind("0.0.0.0", JOB_PORT);
+  file_server.Bind("0.0.0.0", FILE_PORT);
+  bool success;
+  success = job_server.Listen();
   if (!success) {
-    fprintf(stderr, "Listen error.\n");
+    fprintf(stderr, "Error listening on job server.\n");
     return 1;
   }
+  success = file_server.Listen();
+  if (!success) {
+    fprintf(stderr, "Error listening on file server.\n");
+  }
 
-  return loop.Run();
 }
-
