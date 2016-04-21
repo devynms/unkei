@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/acceber/workspaces/ros_catkin/src/dpptam/devel/setup.sh
