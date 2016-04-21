@@ -1,0 +1,8 @@
+prefix=/home/acceber/workspaces/ros_catkin/src/dpptam/devel
+
+Name: dpptam
+Description: Description of dpptam
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/acceber/workspaces/ros_catkin/src/dpptam/devel/lib 
+Requires: roscpp sensor_msgs image_transport cv_bridge tf

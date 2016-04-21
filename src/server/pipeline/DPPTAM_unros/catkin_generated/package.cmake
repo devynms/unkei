@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "dpptam")
+set(dpptam_MAINTAINER "Alejo <Alejo@todo.todo>")
+set(dpptam_DEPRECATED "")
+set(dpptam_VERSION "0.0.0")
+set(dpptam_BUILD_DEPENDS "roscpp" "sensor_msgs" "tf" "image_transport" "cv_bridge" "cmake_modules" "pcl_ros>")
+set(dpptam_RUN_DEPENDS "roscpp" "image_transport" "cv_bridge" "sensor_msgs" "tf" "pcl_ros")
+set(dpptam_BUILDTOOL_DEPENDS "catkin")
