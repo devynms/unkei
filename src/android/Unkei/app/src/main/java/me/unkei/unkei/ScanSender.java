@@ -3,6 +3,7 @@ package me.unkei.unkei;
 import android.app.Activity;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
+import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
@@ -160,16 +161,19 @@ public class ScanSender extends Activity implements TextureView.SurfaceTextureLi
 
         mMediaRecorder.setCamera(mCamera);
 
+        CamcorderProfile profile = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH);
+
         mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
         mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
 
+
         File output = getOutputMediaFile();
         mMediaRecorder.setOutputFile(output.getAbsolutePath());
+        mMediaRecorder.setProfile(profile);
+        //mMediaRecorder.setMaxDuration(180000); // 3 minutes maximum
+        //mMediaRecorder.setVideoFrameRate(30);
 
-        mMediaRecorder.setMaxDuration(180000); // 3 minutes maximum
-        mMediaRecorder.setVideoFrameRate(30);
-
-        mMediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.MPEG_4_SP);
+        //mMediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.MPEG_4_SP);
 
         try {
             mMediaRecorder.prepare();
