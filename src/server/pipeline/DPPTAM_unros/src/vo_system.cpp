@@ -117,4 +117,19 @@ void vo_system::imgcb(const sensor_msgs::Image::ConstPtr& msg)
     }
 }
 
+//remplaces imgcb
+bool runVideo(string filepath)
+{
+    cv::VideoCapture capture(filepath);
+    cv::Mat frame;
+
+    if(!capture.isOpened())
+        throw "Error reading the video file";
+
+    while(!frame.empty()){
+        capture >> frame;
+
+    }
+    return true;
+}
 
