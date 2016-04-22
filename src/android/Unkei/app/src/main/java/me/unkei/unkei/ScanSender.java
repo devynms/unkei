@@ -164,12 +164,13 @@ public class ScanSender extends Activity implements TextureView.SurfaceTextureLi
         CamcorderProfile profile = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH);
 
         mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
-        mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+        mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.CAMCORDER);
+        //mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+        mMediaRecorder.setProfile(profile);
 
 
         File output = getOutputMediaFile();
         mMediaRecorder.setOutputFile(output.getAbsolutePath());
-        mMediaRecorder.setProfile(profile);
         //mMediaRecorder.setMaxDuration(180000); // 3 minutes maximum
         //mMediaRecorder.setVideoFrameRate(30);
 
