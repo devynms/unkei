@@ -128,7 +128,7 @@ bool runVideo(string filepath)
 
     while(!frame.empty()){
         capture >> frame;
-
+        image_frame_aux = frame.clone();
     }
     return true;
 }
