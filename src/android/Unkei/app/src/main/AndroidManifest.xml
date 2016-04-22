@@ -29,11 +29,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ScanActivity" />
+        <activity android:name=".ScanActivity"
+            android:screenOrientation="landscape"
+            />
         <activity
             android:name=".ScanSender"
             android:label="@string/title_activity_server_connection"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="landscape">
+        </activity>
     </application>
 
 </manifest>

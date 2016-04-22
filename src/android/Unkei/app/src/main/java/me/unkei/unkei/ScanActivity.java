@@ -37,10 +37,11 @@ public class ScanActivity extends Activity implements TextureView.SurfaceTexture
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
-        mPreview = (TextureView) findViewById(R.id.surface_view);
+        mPreview =  new TextureView(this);//(TextureView) findViewById(R.id.surface_view);
         recordButton = (ImageButton) findViewById(R.id.button_record);
         isRecording = false;
 
+        mPreview.setSurfaceTextureListener(this);
         setContentView(R.layout.activity_scan);
     }
 

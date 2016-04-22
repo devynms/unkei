@@ -2,19 +2,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:screenOrientation="landscape"
+    android:id="@+id/root"
     tools:context=".ScanSender">
-
-    <TextureView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/surface_view" />
 
     <ImageButton
         android:layout_width="200px"
         android:layout_height="wrap_content"
         android:id="@+id/button_record"
-        android:layout_gravity="center_horizontal|bottom"
+        android:layout_gravity="center_vertical|right"
         android:onClick="onRecordClick"
         android:src="@drawable/start_recording"/>
 </FrameLayout>
