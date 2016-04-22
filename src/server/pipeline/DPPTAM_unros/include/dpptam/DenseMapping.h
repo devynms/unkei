@@ -22,37 +22,29 @@
 #define __DENSEMAPPING_H
 
 
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <iostream>
-#include <vector>
-#include <stdio.h>
-#include <stack>
-#include <ctime>
-
-//chadir
 #include <unistd.h>
-// reading a text file
+#include <dirent.h>
+#include <stdio.h>
+
 #include <iostream>
 #include <fstream>
+#include <vector>
+#include <stack>
+#include <ctime>
 #include <string>
-//directorio
-#include <dirent.h>
-//#include <ros/ros.h>
 
-#include <dpptam/superpixel.h>
-using namespace std;
-
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <iostream>
-//#include <cv_bridge/cv_bridge.h>
 #include <opencv2/opencv.hpp>
+#include <opencv2/core/core.hpp>
 #include "opencv2/imgproc/imgproc.hpp"
+#include <opencv2/highgui/highgui.hpp>
 
 #include <boost/thread.hpp>
 
+#include <dpptam/superpixel.h>
+//#include <dpptam/vo_system.h>
+class vo_system;
 
+using namespace std;
 class DenseMapping  :public Imagenes {
   public:
     DenseMapping();
@@ -115,7 +107,7 @@ private:
 void print_poses(cv::Mat &points, char buffer[],int color);
 
 ///dense mapping thread
-void ThreadDenseMapper(DenseMapping *pdense_mapper);
+void ThreadDenseMapper(DenseMapping *pdense_mapper, vo_system *pSystem);
 ///dense mapping thread
 
 ///dense mapping function

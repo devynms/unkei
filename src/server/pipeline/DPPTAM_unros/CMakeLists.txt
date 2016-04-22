@@ -1,52 +1,57 @@
-
+# attempt at building without ros
 
 cmake_minimum_required(VERSION 2.8.3)
-project(dpptam)
+project(dpptam_noros)
 add_definitions(-std=c++11 -Werror=return-type ${PCL_DEFINITIONS})
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake)
 set(CMAKE_BUILD_TYPE RelWithDebInfo)
 
 find_package(cmake_modules REQUIRED)
-find_package(catkin REQUIRED COMPONENTS roscpp sensor_msgs image_transport cv_bridge tf pcl_ros)
+find_package(PCL 1.2 REQUIRED)
+#find_package(catkin REQUIRED COMPONENTS roscpp sensor_msgs image_transport cv_bridge tf pcl_ros)
 
 
 set(CMAKE_BUILD_TYPE Debug)
 
-catkin_package(CATKIN_DEPENDS roscpp sensor_msgs image_transport cv_bridge tf)
+#catkin_package(CATKIN_DEPENDS roscpp sensor_msgs image_transport cv_bridge tf)
+
+set(BASEDIR ./)
 
 set(DENSE_SOURCE_FILES     
-		src/SemiDenseMapping.cpp
-                src/DenseMapping.cpp
-                src/SemiDenseTracking.cpp
-                src/vo_system.cpp
-                src/superpixel.cpp
-		src/main.cpp
-                src/PlyListener.cpp
-#               src/Mesher.cpp
+		${BASEDIR}src/SemiDenseMapping.cpp
+                ${BASEDIR}src/DenseMapping.cpp
+                ${BASEDIR}src/SemiDenseTracking.cpp
+                ${BASEDIR}src/vo_system.cpp
+                ${BASEDIR}src/superpixel.cpp
+		${BASEDIR}src/main.cpp
+                ${BASEDIR}src/PlyListener.cpp
+#               ${BASEDIR}src/Mesher.cpp
 )
 
 
 set(DENSE_HEADER_FILES  
-		include/dpptam/SemiDenseMapping.h
-                include/dpptam/DenseMapping.h
-                include/dpptam/SemiDenseTracking.h
-                include/dpptam/vo_system.h
-                include/dpptam/superpixel.h
-                include/dpptam/PlyListener.h
-#               include/dpptam/Mesher.h
+		${BASEDIR}include/dpptam/SemiDenseMapping.h
+                ${BASEDIR}include/dpptam/DenseMapping.h
+                ${BASEDIR}include/dpptam/SemiDenseTracking.h
+                ${BASEDIR}include/dpptam/vo_system.h
+                ${BASEDIR}include/dpptam/superpixel.h
+                ${BASEDIR}include/dpptam/PlyListener.h
+#               ${BASEDIR}include/dpptam/Mesher.h
+                ${BASEDIR}include/dpptam/MainWrapper.h
 )
 
 set(MESHER_SOURCE_FILES
-                src/Mesher.cpp
-                src/MesherExec.cpp
+                ${BASEDIR}src/Mesher.cpp
+                ${BASEDIR}src/MesherExec.cpp
 )
 set(MESHER_HEADER_FILES
-                include/dpptam/Mesher.h
+                ${BASEDIR}include/dpptam/Mesher.h
 )
 
 find_package(OpenCV REQUIRED)
 include_directories(
-  include ${catkin_INCLUDE_DIRS}
+  ${BASEDIR}include 
+  #${catkin_INCLUDE_DIRS}
   ${OpenCV_INCLUDE_DIRS}
   ${Eigen_INCLUDE_DIRS}
   ${PCL_INCLUDE_DIRS}
@@ -78,13 +83,13 @@ link_directories(${PCL_LIBRARY_DIRS})
 ###########
 ## Build ##
 ###########
-add_executable(dpptam ${DENSE_HEADER_FILES} ${DENSE_SOURCE_FILES})
-target_link_libraries(dpptam ${OpenCV_LIBS} ${catkin_LIBRARIES})
+add_executable(dpptam_noros ${DENSE_HEADER_FILES} ${DENSE_SOURCE_FILES})
+target_link_libraries(dpptam_noros ${OpenCV_LIBS} ${PCL_LIBRARIES})#${catkin_LIBRARIES})
 
 add_executable(mesher ${MESHER_HEADER_FILES} ${MESHER_SOURCE_FILES})
-target_link_libraries(mesher ${OpenCV_LIBS} ${catkin_LIBRARIES})
+target_link_libraries(mesher ${OpenCV_LIBS} ${PCL_LIBRARIES})#${catkin_LIBRARIES})
 
-install(PROGRAMS
-  scripts/run_bag
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
+#install(PROGRAMS
+#  scripts/run_bag
+#  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+#)

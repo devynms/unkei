@@ -18,19 +18,28 @@
 * along with DPPTAM. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <dpptam/vo_system.h>
 #include <fstream>
 #include <iomanip>    // Needed for stream modifiers fixed and set precision
 
-//#include <ros/package.h>
+#include <dpptam/vo_system.h>
+//#include <dpptam/superpixel.h>
+//#include <dpptam/DenseMapping.h>
+//#include <dpptam/SemiDenseTracking.h>
+//#include <dpptam/SemiDenseMapping.h>
+//#include <dpptam/PlyListener.h>
 
+std::string vo_system::GetCwd() {
+    char buf[512];
+    getcwd(buf, 511);
+    return std::string(buf);
+}
 
 vo_system::vo_system(){
 
 
     ///vo_system launch the three threads, tracking, semidense mapping and dense mapping (3D superpixels)
 
-    cv::FileStorage  fs2( (getcwd()+"/src/data.yml"), cv::FileStorage::READ);
+    cv::FileStorage  fs2( (GetCwd()+"/src/data.yml"), cv::FileStorage::READ);
 
     std::string camera_path;
     fs2["camera_path"] >> camera_path;
@@ -69,23 +78,23 @@ vo_system::vo_system(){
 
 
     ///Launch semidense tracker thread*/
-    boost::thread thread_semidense_tracker(&ThreadSemiDenseTracker,&images,&semidense_mapper,&semidense_tracker,&dense_mapper,&Map);
+    boost::thread thread_semidense_tracker(&ThreadSemiDenseTracker,&images,&semidense_mapper,&semidense_tracker,&dense_mapper,&Map, this);
 
     ///Launch semidense mapper thread
-    boost::thread thread_semidense_mapper(&ThreadSemiDenseMapper,&images,&images_previous_keyframe,&semidense_mapper,&semidense_tracker,&dense_mapper,&Map);
+    boost::thread thread_semidense_mapper(&ThreadSemiDenseMapper,&images,&images_previous_keyframe,&semidense_mapper,&semidense_tracker,&dense_mapper,&Map, this);
 
 
     if (calculate_superpixels > 0.5)
     {
         ///launch dense mapper thread
-         boost::thread thread_dense_mapper(&ThreadDenseMapper,&dense_mapper);
+         boost::thread thread_dense_mapper(&ThreadDenseMapper,&dense_mapper, this);
     }
 
     // KEYWORD
     // launch monitor ply to pcd thread
-    std::string pcd_dir = getcwd() + "/data/meshes";//getcwd()+"/data/meshes";
-    std::string mesh_file = getcwd() + "/data/out.stl"; //getcwd()+"/data/out.stl";
-    boost::thread thread_ply_listener(&ThreadPlyListener, &ply_listener, &dense_mapper, &semidense_mapper, pcd_dir, mesh_file);
+    std::string pcd_dir = GetCwd() + "/data/meshes";//getcwd()+"/data/meshes";
+    std::string mesh_file = GetCwd() + "/data/out.stl"; //getcwd()+"/data/out.stl";
+    boost::thread thread_ply_listener(&ThreadPlyListener, &ply_listener, &dense_mapper, &semidense_mapper, this, pcd_dir, mesh_file);
     cout << "PlyListener thread launched!\n";
     
     cout << "***    DPPTAM is working     *** " <<  endl << endl;
@@ -95,26 +104,30 @@ vo_system::vo_system(){
 
 
 
-void vo_system::imgcb(const sensor_msgs::Image::ConstPtr& msg)
+void vo_system::imgcb(const cv::Mat& image) 
 {
     ///read images
-    try {
-        cv_bridge::CvImageConstPtr cv_ptr;
+    //try {
+        //cv_bridge::CvImageConstPtr cv_ptr;
 
-        cv_bridge::toCvShare(msg);
-        cv_ptr = cv_bridge::toCvShare(msg);
+        //cv_bridge::toCvShare(msg);
+        //cv_ptr = cv_bridge::toCvShare(msg);
 
-        time_stamps =  cv_ptr->header.stamp;
-        stamps = cv_ptr->header.stamp.toSec();
-        current_time = cv_ptr->header.stamp;
-        image_frame_aux =  cv_ptr->image.clone();
+        //time_stamps =  cv_ptr->header.stamp;
+        //stamps = cv_ptr->header.stamp.toSec();
+        //current_time = cv_ptr->header.stamp;
+        stamps = ((float)clock())/CLOCKS_PER_SEC;
+        time_stamps = clock();
+        current_time = clock();
+        
+        image_frame_aux =  image.clone();
         cont_frames++;
-    } 
-    catch (const cv_bridge::Exception& e)
-    {
+    //} 
+    //catch (const std::exception& e)
+    //{
         //ROS_ERROR("cv_bridge exception: %s", e.what());
-        fprintf(stderr, "cv_bridge_exception: %s", e.what());
-    }
+    //    fprintf(stderr, "cv_bridge_exception: %s", e.what());
+    //}
 }
 
 //remplaces imgcb

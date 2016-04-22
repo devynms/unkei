@@ -1,13 +1,13 @@
+#include <time.h>
+#include <unistd.h>
+
 #include <string>
 #include <iostream>
 #include <cstdio>
 #include <memory>
-#include <ros/package.h>
-#include <ros/ros.h>
-#include <time.h>
-#include <unistd.h>
 
 #include <dpptam/PlyListener.h>
+#include <dpptam/vo_system.h>
 //#include <dpptam/Mesher.h>
 
 // max seconds to wait on condition variable
@@ -16,7 +16,7 @@
 
 PlyListener::PlyListener() : pcd_count(0) { }
 
-void ThreadPlyListener(PlyListener *pply_listener, DenseMapping *pdense_mapper, SemiDenseMapping *psemidense_mapper, const std::string& pcd_dir, const std::string& mesh_file) {
+void ThreadPlyListener(PlyListener *pply_listener, DenseMapping *pdense_mapper, SemiDenseMapping *psemidense_mapper, vo_system *pSystem, const std::string& pcd_dir, const std::string& mesh_file) {
 
     boost::filesystem::remove_all(pcd_dir.c_str());
     boost::filesystem::create_directory(pcd_dir.c_str());
@@ -24,7 +24,9 @@ void ThreadPlyListener(PlyListener *pply_listener, DenseMapping *pdense_mapper, 
     pply_listener->pcd_dir = pcd_dir;
     pply_listener->mesh_file = mesh_file;
     int pcd_count_save = 0;
-    while(ros::ok())
+    
+    {boost::unique_lock<boost::mutex> done_lock(pSystem->done_mutex);
+    while(!pSystem->done)
     {
         cout << "PlyListener: top of while (acquiring lock on pcd_count_mutex)\n";
         {
@@ -57,7 +59,10 @@ void ThreadPlyListener(PlyListener *pply_listener, DenseMapping *pdense_mapper, 
             }
         }
         cout << "PlyListener: pcd_count_save = " << pcd_count_save << "\n";
-        boost::this_thread::sleep(boost::posix_time::milliseconds(33));
+        pSystem->done_cond.wait(done_lock);
+        //boost::this_thread::sleep(boost::posix_time::milliseconds(33));
+    }
+    done_lock.unlock();
     }
     cout << "PlyListener: Exiting main thread ThreadPlyListener.\n";
 }

@@ -18,15 +18,11 @@
 * along with DPPTAM. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <dpptam/SemiDenseTracking.h>
-#include <dpptam/vo_system.h>
 #include <Eigen/Dense>
 #include <opencv2/core/eigen.hpp>
-//#include <ros/ros.h>
-//#include <ros/package.h>
 
-#include <image_transport/image_transport.h>
-
+#include <dpptam/SemiDenseTracking.h>
+#include <dpptam/vo_system.h>
 
 SemiDenseTracking::SemiDenseTracking()
 {
@@ -34,8 +30,7 @@ SemiDenseTracking::SemiDenseTracking()
 
 
 
-   //cv::FileStorage  fs2( (getcwd()+"/src/data.yml").c_str(), cv::FileStorage::READ);
-   cv::FileStorage  fs2( (getcwd()+"/src/data.yml"), cv::FileStorage::READ);
+   cv::FileStorage  fs2( (vo_system::GetCwd()+"/src/data.yml").c_str(), cv::FileStorage::READ);
    fs2["cameraMatrix"] >> cameraMatrix;
    fs2["distCoeffs"] >> distCoeffs;
 
@@ -97,12 +92,12 @@ SemiDenseTracking::SemiDenseTracking()
    create_inv_depth_discretization = 0;
 
 
-   boost::filesystem::remove_all((getcwd()+"/src/map_and_poses"));
-   boost::filesystem::create_directory((getcwd()+"/src/map_and_poses"));
-   boost::filesystem::remove_all((getcwd()+"/src/evaluation"));
-   boost::filesystem::create_directory((getcwd()+"/src/evaluation"));
-   boost::filesystem::remove_all((getcwd()+"/src/results_depth_maps"));
-   boost::filesystem::create_directory((getcwd()+"/src/results_depth_maps"));
+   boost::filesystem::remove_all((vo_system::GetCwd()+"/src/map_and_poses").c_str());
+   boost::filesystem::create_directory((vo_system::GetCwd()+"/src/map_and_poses").c_str());
+   boost::filesystem::remove_all((vo_system::GetCwd()+"/src/evaluation").c_str());
+   boost::filesystem::create_directory((vo_system::GetCwd()+"/src/evaluation").c_str());
+   boost::filesystem::remove_all((vo_system::GetCwd()+"/src/results_depth_maps").c_str());
+   boost::filesystem::create_directory((vo_system::GetCwd()+"/src/results_depth_maps").c_str());
 
    R = (cv::Mat_<double>(3, 3) <<  1,0,0,0,1,0,0,0,1);
    t = (cv::Mat_<double>(3, 1) << 0,0,0);
@@ -280,17 +275,16 @@ void SemiDenseTracking::init_weight(int pyramid_levels)
 
 
 void ThreadSemiDenseTracker(Imagenes *images,SemiDenseMapping *semidense_mapper,\
-                            SemiDenseTracking *semidense_tracker,DenseMapping *dense_mapper,MapShared *Map)
+                            SemiDenseTracking *semidense_tracker,DenseMapping *dense_mapper,MapShared *Map, vo_system *pSystem)
 {
     //KEYWORD
-    // define some condition_variable in MainWrapper that all of these threads look at. call it done
-    boost::unique_lock<boost::mutex> lock(mMainWrapper->done_mutex);
-    while(!mMainWrapper->done) {
-        condition_variable_thing.wait();
-
+    boost::unique_lock<boost::mutex> done_lock(pSystem->done_mutex);
+    while(!pSystem->done) {
         semidense_tracking(images,semidense_mapper,semidense_tracker,dense_mapper, Map);
-        boost::this_thread::sleep(boost::posix_time::milliseconds(1));
+        pSystem->done_cond.wait(done_lock);
+        //boost::this_thread::sleep(boost::posix_time::milliseconds(1));
     }
+    done_lock.unlock();
 }
 
 
@@ -303,7 +297,7 @@ void semidense_tracking(Imagenes *images,SemiDenseMapping *semidense_mapper,\
 
             cv::Mat image_frame_aux  = (*semidense_tracker->image_frame).clone();
             double stamps_aux = *semidense_tracker->stamps;
-             clock_t time_stamps= *semidense_tracker->time_stamps;
+            clock_t time_stamps= *semidense_tracker->time_stamps;
 
             semidense_tracker->last_cont_frames = *semidense_tracker->cont_frames;
             prepare_image(image_frame_aux,semidense_tracker->image_rgb,semidense_tracker->image_to_track,\
@@ -1002,7 +996,7 @@ void optimize_camera(int num_keyframes,SemiDenseTracking *semidense_tracker,Semi
 
     if (images.getNumberOfImages() < 2)
     {
-        sprintf (buffer,(getcwd() + "/src/map_and_poses/tracking.ply"));//getcwd()+"/src/map_and_poses/tracking.ply").c_str());
+        sprintf (buffer,(vo_system::GetCwd() + "/src/map_and_poses/tracking.ply").c_str());
         print_poses(semidense_tracker->poses,buffer);
     }
 

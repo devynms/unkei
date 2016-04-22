@@ -21,41 +21,31 @@
 #ifndef __SEMIDENSETRACKING_H
 #define __SEMIDENSETRACKING_H
 
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <iostream>
-#include <vector>
+#include <unistd.h>
 #include <stdio.h>
+#include <dirent.h>
+
+#include <vector>
 #include <stack>
 #include <ctime>
-
-//chadir
-#include <unistd.h>
-// reading a text file
 #include <iostream>
 #include <fstream>
 #include <string>
-//directorio
-#include <dirent.h>
-//#include <ros/ros.h>
-//#include <image_transport/image_transport.h>
-
-
-//#include "superpixel.h"
-//#include <dpptam/DenseMapping.h>
-#include <dpptam/SemiDenseMapping.h>
-//#include <dpptam/vo_system.h>
-using namespace std;
 
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
-#include <iostream>
-//#include <cv_bridge/cv_bridge.h>
 #include <opencv2/opencv.hpp>
 #include "opencv2/imgproc/imgproc.hpp"
 
-//#include <tf/transform_broadcaster.h>
+//#include "superpixel.h"
+#include <dpptam/DenseMapping.h>
+#include <dpptam/SemiDenseMapping.h>
+//#include <dpptam/vo_system.h>
+class vo_system;
 
+
+
+using namespace std;
 class SemiDenseTracking  :public Imagenes {
   public:
     SemiDenseTracking();
@@ -71,7 +61,7 @@ class SemiDenseTracking  :public Imagenes {
     void set_poses_local_maps(cv::Mat,int);
     vector<cv::Mat> get_poses_local_maps(){return poses_local_maps;}
 
-    tf::TransformBroadcaster mTfBr;
+    //tf::TransformBroadcaster mTfBr;
 
 
     int processed_frames;
@@ -167,7 +157,7 @@ class SemiDenseTracking  :public Imagenes {
     int *cont_frames;
     double *stamps;
     //KEYWORD
-    clock_t time_stamps;
+    clock_t *time_stamps;
 
     int last_cont_frames;
 
@@ -205,7 +195,7 @@ class SemiDenseMapping;  // It is defined also here due to cross reference (#inc
 
 ///Semidense tracker thread
 void ThreadSemiDenseTracker(Imagenes *images,SemiDenseMapping *semidense_mapper,\
-                            SemiDenseTracking *semidense_tracker,DenseMapping *dense_mapper,MapShared *Map);
+                            SemiDenseTracking *semidense_tracker,DenseMapping *dense_mapper,MapShared *Map, vo_system *pSystem);
 ///semidense_tracking function
 void  semidense_tracking(Imagenes *images,SemiDenseMapping *semidense_mapper,\
                          SemiDenseTracking *semidense_tracker,DenseMapping *dense_mapper,MapShared *Map);
