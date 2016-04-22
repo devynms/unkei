@@ -1,4 +1,4 @@
-# Install script for directory: /home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM_unros
+# Install script for directory: /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM_unros
 
 # Set the install prefix
 IF(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -38,7 +38,7 @@ ELSE(CMAKE_INSTALL_COMPONENT)
   SET(CMAKE_INSTALL_MANIFEST "install_manifest.txt")
 ENDIF(CMAKE_INSTALL_COMPONENT)
 
-FILE(WRITE "/home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM_unros/${CMAKE_INSTALL_MANIFEST}" "")
+FILE(WRITE "/home/josh/Workspace/unkei/src/server/pipeline/DPPTAM_unros/${CMAKE_INSTALL_MANIFEST}" "")
 FOREACH(file ${CMAKE_INSTALL_MANIFEST_FILES})
-  FILE(APPEND "/home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM_unros/${CMAKE_INSTALL_MANIFEST}" "${file}\n")
+  FILE(APPEND "/home/josh/Workspace/unkei/src/server/pipeline/DPPTAM_unros/${CMAKE_INSTALL_MANIFEST}" "${file}\n")
 ENDFOREACH(file)

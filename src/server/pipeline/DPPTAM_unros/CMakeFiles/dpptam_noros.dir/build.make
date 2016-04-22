@@ -35,10 +35,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM_unros
+CMAKE_SOURCE_DIR = /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM_unros
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM_unros
+CMAKE_BINARY_DIR = /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM_unros
 
 # Include any dependencies generated for this target.
 include CMakeFiles/dpptam_noros.dir/depend.make
@@ -51,17 +51,17 @@ include CMakeFiles/dpptam_noros.dir/flags.make
 
 CMakeFiles/dpptam_noros.dir/src/SemiDenseMapping.cpp.o: CMakeFiles/dpptam_noros.dir/flags.make
 CMakeFiles/dpptam_noros.dir/src/SemiDenseMapping.cpp.o: src/SemiDenseMapping.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM_unros/CMakeFiles $(CMAKE_PROGRESS_1)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM_unros/CMakeFiles $(CMAKE_PROGRESS_1)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/dpptam_noros.dir/src/SemiDenseMapping.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/dpptam_noros.dir/src/SemiDenseMapping.cpp.o -c /home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM_unros/src/SemiDenseMapping.cpp
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/dpptam_noros.dir/src/SemiDenseMapping.cpp.o -c /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM_unros/src/SemiDenseMapping.cpp
 
 CMakeFiles/dpptam_noros.dir/src/SemiDenseMapping.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/dpptam_noros.dir/src/SemiDenseMapping.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM_unros/src/SemiDenseMapping.cpp > CMakeFiles/dpptam_noros.dir/src/SemiDenseMapping.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM_unros/src/SemiDenseMapping.cpp > CMakeFiles/dpptam_noros.dir/src/SemiDenseMapping.cpp.i
 
 CMakeFiles/dpptam_noros.dir/src/SemiDenseMapping.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/dpptam_noros.dir/src/SemiDenseMapping.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM_unros/src/SemiDenseMapping.cpp -o CMakeFiles/dpptam_noros.dir/src/SemiDenseMapping.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM_unros/src/SemiDenseMapping.cpp -o CMakeFiles/dpptam_noros.dir/src/SemiDenseMapping.cpp.s
 
 CMakeFiles/dpptam_noros.dir/src/SemiDenseMapping.cpp.o.requires:
 .PHONY : CMakeFiles/dpptam_noros.dir/src/SemiDenseMapping.cpp.o.requires
@@ -74,17 +74,17 @@ CMakeFiles/dpptam_noros.dir/src/SemiDenseMapping.cpp.o.provides.build: CMakeFile
 
 CMakeFiles/dpptam_noros.dir/src/DenseMapping.cpp.o: CMakeFiles/dpptam_noros.dir/flags.make
 CMakeFiles/dpptam_noros.dir/src/DenseMapping.cpp.o: src/DenseMapping.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM_unros/CMakeFiles $(CMAKE_PROGRESS_2)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM_unros/CMakeFiles $(CMAKE_PROGRESS_2)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/dpptam_noros.dir/src/DenseMapping.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/dpptam_noros.dir/src/DenseMapping.cpp.o -c /home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM_unros/src/DenseMapping.cpp
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/dpptam_noros.dir/src/DenseMapping.cpp.o -c /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM_unros/src/DenseMapping.cpp
 
 CMakeFiles/dpptam_noros.dir/src/DenseMapping.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/dpptam_noros.dir/src/DenseMapping.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM_unros/src/DenseMapping.cpp > CMakeFiles/dpptam_noros.dir/src/DenseMapping.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM_unros/src/DenseMapping.cpp > CMakeFiles/dpptam_noros.dir/src/DenseMapping.cpp.i
 
 CMakeFiles/dpptam_noros.dir/src/DenseMapping.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/dpptam_noros.dir/src/DenseMapping.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM_unros/src/DenseMapping.cpp -o CMakeFiles/dpptam_noros.dir/src/DenseMapping.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM_unros/src/DenseMapping.cpp -o CMakeFiles/dpptam_noros.dir/src/DenseMapping.cpp.s
 
 CMakeFiles/dpptam_noros.dir/src/DenseMapping.cpp.o.requires:
 .PHONY : CMakeFiles/dpptam_noros.dir/src/DenseMapping.cpp.o.requires
@@ -97,17 +97,17 @@ CMakeFiles/dpptam_noros.dir/src/DenseMapping.cpp.o.provides.build: CMakeFiles/dp
 
 CMakeFiles/dpptam_noros.dir/src/SemiDenseTracking.cpp.o: CMakeFiles/dpptam_noros.dir/flags.make
 CMakeFiles/dpptam_noros.dir/src/SemiDenseTracking.cpp.o: src/SemiDenseTracking.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM_unros/CMakeFiles $(CMAKE_PROGRESS_3)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM_unros/CMakeFiles $(CMAKE_PROGRESS_3)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/dpptam_noros.dir/src/SemiDenseTracking.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/dpptam_noros.dir/src/SemiDenseTracking.cpp.o -c /home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM_unros/src/SemiDenseTracking.cpp
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/dpptam_noros.dir/src/SemiDenseTracking.cpp.o -c /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM_unros/src/SemiDenseTracking.cpp
 
 CMakeFiles/dpptam_noros.dir/src/SemiDenseTracking.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/dpptam_noros.dir/src/SemiDenseTracking.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM_unros/src/SemiDenseTracking.cpp > CMakeFiles/dpptam_noros.dir/src/SemiDenseTracking.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM_unros/src/SemiDenseTracking.cpp > CMakeFiles/dpptam_noros.dir/src/SemiDenseTracking.cpp.i
 
 CMakeFiles/dpptam_noros.dir/src/SemiDenseTracking.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/dpptam_noros.dir/src/SemiDenseTracking.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM_unros/src/SemiDenseTracking.cpp -o CMakeFiles/dpptam_noros.dir/src/SemiDenseTracking.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM_unros/src/SemiDenseTracking.cpp -o CMakeFiles/dpptam_noros.dir/src/SemiDenseTracking.cpp.s
 
 CMakeFiles/dpptam_noros.dir/src/SemiDenseTracking.cpp.o.requires:
 .PHONY : CMakeFiles/dpptam_noros.dir/src/SemiDenseTracking.cpp.o.requires
@@ -120,17 +120,17 @@ CMakeFiles/dpptam_noros.dir/src/SemiDenseTracking.cpp.o.provides.build: CMakeFil
 
 CMakeFiles/dpptam_noros.dir/src/vo_system.cpp.o: CMakeFiles/dpptam_noros.dir/flags.make
 CMakeFiles/dpptam_noros.dir/src/vo_system.cpp.o: src/vo_system.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM_unros/CMakeFiles $(CMAKE_PROGRESS_4)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM_unros/CMakeFiles $(CMAKE_PROGRESS_4)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/dpptam_noros.dir/src/vo_system.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/dpptam_noros.dir/src/vo_system.cpp.o -c /home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM_unros/src/vo_system.cpp
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/dpptam_noros.dir/src/vo_system.cpp.o -c /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM_unros/src/vo_system.cpp
 
 CMakeFiles/dpptam_noros.dir/src/vo_system.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/dpptam_noros.dir/src/vo_system.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM_unros/src/vo_system.cpp > CMakeFiles/dpptam_noros.dir/src/vo_system.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM_unros/src/vo_system.cpp > CMakeFiles/dpptam_noros.dir/src/vo_system.cpp.i
 
 CMakeFiles/dpptam_noros.dir/src/vo_system.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/dpptam_noros.dir/src/vo_system.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM_unros/src/vo_system.cpp -o CMakeFiles/dpptam_noros.dir/src/vo_system.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM_unros/src/vo_system.cpp -o CMakeFiles/dpptam_noros.dir/src/vo_system.cpp.s
 
 CMakeFiles/dpptam_noros.dir/src/vo_system.cpp.o.requires:
 .PHONY : CMakeFiles/dpptam_noros.dir/src/vo_system.cpp.o.requires
@@ -143,17 +143,17 @@ CMakeFiles/dpptam_noros.dir/src/vo_system.cpp.o.provides.build: CMakeFiles/dppta
 
 CMakeFiles/dpptam_noros.dir/src/superpixel.cpp.o: CMakeFiles/dpptam_noros.dir/flags.make
 CMakeFiles/dpptam_noros.dir/src/superpixel.cpp.o: src/superpixel.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM_unros/CMakeFiles $(CMAKE_PROGRESS_5)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM_unros/CMakeFiles $(CMAKE_PROGRESS_5)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/dpptam_noros.dir/src/superpixel.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/dpptam_noros.dir/src/superpixel.cpp.o -c /home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM_unros/src/superpixel.cpp
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/dpptam_noros.dir/src/superpixel.cpp.o -c /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM_unros/src/superpixel.cpp
 
 CMakeFiles/dpptam_noros.dir/src/superpixel.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/dpptam_noros.dir/src/superpixel.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM_unros/src/superpixel.cpp > CMakeFiles/dpptam_noros.dir/src/superpixel.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM_unros/src/superpixel.cpp > CMakeFiles/dpptam_noros.dir/src/superpixel.cpp.i
 
 CMakeFiles/dpptam_noros.dir/src/superpixel.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/dpptam_noros.dir/src/superpixel.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM_unros/src/superpixel.cpp -o CMakeFiles/dpptam_noros.dir/src/superpixel.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM_unros/src/superpixel.cpp -o CMakeFiles/dpptam_noros.dir/src/superpixel.cpp.s
 
 CMakeFiles/dpptam_noros.dir/src/superpixel.cpp.o.requires:
 .PHONY : CMakeFiles/dpptam_noros.dir/src/superpixel.cpp.o.requires
@@ -166,17 +166,17 @@ CMakeFiles/dpptam_noros.dir/src/superpixel.cpp.o.provides.build: CMakeFiles/dppt
 
 CMakeFiles/dpptam_noros.dir/src/main.cpp.o: CMakeFiles/dpptam_noros.dir/flags.make
 CMakeFiles/dpptam_noros.dir/src/main.cpp.o: src/main.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM_unros/CMakeFiles $(CMAKE_PROGRESS_6)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM_unros/CMakeFiles $(CMAKE_PROGRESS_6)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/dpptam_noros.dir/src/main.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/dpptam_noros.dir/src/main.cpp.o -c /home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM_unros/src/main.cpp
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/dpptam_noros.dir/src/main.cpp.o -c /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM_unros/src/main.cpp
 
 CMakeFiles/dpptam_noros.dir/src/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/dpptam_noros.dir/src/main.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM_unros/src/main.cpp > CMakeFiles/dpptam_noros.dir/src/main.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM_unros/src/main.cpp > CMakeFiles/dpptam_noros.dir/src/main.cpp.i
 
 CMakeFiles/dpptam_noros.dir/src/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/dpptam_noros.dir/src/main.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM_unros/src/main.cpp -o CMakeFiles/dpptam_noros.dir/src/main.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM_unros/src/main.cpp -o CMakeFiles/dpptam_noros.dir/src/main.cpp.s
 
 CMakeFiles/dpptam_noros.dir/src/main.cpp.o.requires:
 .PHONY : CMakeFiles/dpptam_noros.dir/src/main.cpp.o.requires
@@ -189,17 +189,17 @@ CMakeFiles/dpptam_noros.dir/src/main.cpp.o.provides.build: CMakeFiles/dpptam_nor
 
 CMakeFiles/dpptam_noros.dir/src/PlyListener.cpp.o: CMakeFiles/dpptam_noros.dir/flags.make
 CMakeFiles/dpptam_noros.dir/src/PlyListener.cpp.o: src/PlyListener.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM_unros/CMakeFiles $(CMAKE_PROGRESS_7)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM_unros/CMakeFiles $(CMAKE_PROGRESS_7)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/dpptam_noros.dir/src/PlyListener.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/dpptam_noros.dir/src/PlyListener.cpp.o -c /home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM_unros/src/PlyListener.cpp
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/dpptam_noros.dir/src/PlyListener.cpp.o -c /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM_unros/src/PlyListener.cpp
 
 CMakeFiles/dpptam_noros.dir/src/PlyListener.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/dpptam_noros.dir/src/PlyListener.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM_unros/src/PlyListener.cpp > CMakeFiles/dpptam_noros.dir/src/PlyListener.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM_unros/src/PlyListener.cpp > CMakeFiles/dpptam_noros.dir/src/PlyListener.cpp.i
 
 CMakeFiles/dpptam_noros.dir/src/PlyListener.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/dpptam_noros.dir/src/PlyListener.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM_unros/src/PlyListener.cpp -o CMakeFiles/dpptam_noros.dir/src/PlyListener.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM_unros/src/PlyListener.cpp -o CMakeFiles/dpptam_noros.dir/src/PlyListener.cpp.s
 
 CMakeFiles/dpptam_noros.dir/src/PlyListener.cpp.o.requires:
 .PHONY : CMakeFiles/dpptam_noros.dir/src/PlyListener.cpp.o.requires
@@ -359,6 +359,6 @@ CMakeFiles/dpptam_noros.dir/clean:
 .PHONY : CMakeFiles/dpptam_noros.dir/clean
 
 CMakeFiles/dpptam_noros.dir/depend:
-	cd /home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM_unros && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM_unros /home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM_unros /home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM_unros /home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM_unros /home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM_unros/CMakeFiles/dpptam_noros.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM_unros && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM_unros /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM_unros /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM_unros /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM_unros /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM_unros/CMakeFiles/dpptam_noros.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/dpptam_noros.dir/depend
 
