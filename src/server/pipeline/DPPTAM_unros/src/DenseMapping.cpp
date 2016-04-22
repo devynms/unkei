@@ -18,17 +18,17 @@
 * along with DPPTAM. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <iostream>
+
 #include <dpptam/DenseMapping.h>
 #include <dpptam/SemiDenseMapping.h>
 #include <dpptam/vo_system.h>
-//#include <ros/package.h>
-#include <iostream>
 
 
 DenseMapping::DenseMapping()
 {
 
-    cv::FileStorage  fs2( (getcwd()+"/src/data.yml"), cv::FileStorage::READ);
+    cv::FileStorage  fs2( (vo_system::GetCwd()+"/src/data.yml").c_str(), cv::FileStorage::READ);
 
     DenseMapping::set_do_dense(0);
     DenseMapping::init_analisis();
@@ -98,15 +98,17 @@ void print_poses(cv::Mat &points, char buffer[],int color)
 
 
 
-void ThreadDenseMapper(DenseMapping *pdense_mapper)
+void ThreadDenseMapper(DenseMapping *pdense_mapper, vo_system *pSystem)
 {
     //KEYWORD
-    boost::unique_lock...
-    while(!done)
+    boost::unique_lock<boost::mutex> done_lock(pSystem->done_mutex);
+    while(!pSystem->done)
     {
         fullydense_mapping(pdense_mapper);
-        boost::this_thread::sleep(boost::posix_time::milliseconds(33));
+        pSystem->done_cond.wait(done_lock);
+        //boost::this_thread::sleep(boost::posix_time::milliseconds(33));
     }
+    done_lock.unlock();
 }
 
 
@@ -416,7 +418,7 @@ void fullydense_mapping(DenseMapping *pdense_mapper)
          if (points_superpixels_all.rows > 10)
          {
              char buffer_sup[150];
-             sprintf (buffer_sup,(getcwd()+"/src/map_and_poses/sup%d.ply").c_str(), pdense_mapper->dense_kf);
+             sprintf (buffer_sup,"%s/src/map_and_poses/sup%d.ply", vo_system::GetCwd().c_str(), pdense_mapper->dense_kf);
              print_plane(points_superpixels_all,buffer_sup);
 
             //KEYWORD
@@ -532,7 +534,7 @@ void calculate_superpixels_and_setdata(Imagenes &images,  int reference_image)
     char curre_dir[150];
     getcwd(curre_dir,149);
 
-    chdir((getcwd()+"/ThirdParty/segment").c_str());
+    chdir((vo_system::GetCwd()+"/ThirdParty/segment").c_str());
 
 
     char buffer[150];

@@ -21,50 +21,40 @@
 #ifndef __SEMIDENSEMAPPING_H
 #define __SEMIDENSEMAPPING_H
 
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <iostream>
-#include <vector>
-#include <stdio.h>
-#include <stack>
-#include <ctime>
-
-//chadir
-#include <unistd.h>
-// reading a text file
-#include <iostream>
-#include <fstream>
-#include <string>
-//directorio
-#include <dirent.h>
-#include <ros/ros.h>
-
-//#include "superpixel.h"
-#include <dpptam/DenseMapping.h>
-#include <dpptam/SemiDenseTracking.h>
-using namespace std;
-
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <iostream>
-//#include <cv_bridge/cv_bridge.h>
-#include <opencv2/opencv.hpp>
-#include "opencv2/imgproc/imgproc.hpp"
-
-
-//#include <ros/ros.h>
-#include <pcl_ros/point_cloud.h>
-#include <pcl/point_types.h>
-
-
-// TIC - TOC
 #include <stdio.h>
 #include <sys/time.h>
 #include <unistd.h>
 #include <math.h>
+#include <dirent.h>
+
+#include <vector>
+#include <stack>
+#include <ctime>
+#include <iostream>
+#include <fstream>
+#include <string>
+
+#include <opencv2/opencv.hpp>
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include "opencv2/imgproc/imgproc.hpp"
+
+
+#include <pcl_ros/point_cloud.h>
+#include <pcl/point_types.h>
+
+#include <dpptam/DenseMapping.h>
+#include <dpptam/SemiDenseTracking.h>
+//#include <dpptam/vo_system.h>
+class vo_system;
+
+
+// TIC - TOC
 /*#define U_SEGS(a)\
          gettimeofday(&tv,0);\
          a = tv.tv_sec + tv.tv_usec/1000000.0*/
+
+using namespace std;
 
 
 class SemiDenseMapping  :public Imagenes {
@@ -179,7 +169,7 @@ class SemiDenseTracking;  // It is defined also here due to cross reference (#in
 
 ///semidesen mapper thread
 void ThreadSemiDenseMapper(Imagenes *images,Imagenes *images_previous_keyframe,SemiDenseMapping *semidense_mapper,\
-                           SemiDenseTracking *semidense_tracker,DenseMapping *dense_mapper,MapShared *Map);
+                           SemiDenseTracking *semidense_tracker,DenseMapping *dense_mapper,MapShared *Map, vo_system *pSystem);
 
 ///semidense mapper function
 void semidense_mapping(DenseMapping *dense_mapper,SemiDenseMapping *semidense_mapper,SemiDenseTracking *semidense_tracker,MapShared  *Map,Imagenes *pimages,Imagenes  *pimages_previous_keyframe);
