@@ -10,6 +10,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".ScanSender"
-    tools:showIn="@layout/activity_server_connection">
+    tools:showIn="@layout/activity_scan_sender">
 
 </RelativeLayout>

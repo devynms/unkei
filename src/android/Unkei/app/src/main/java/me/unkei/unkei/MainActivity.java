@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     public void scan(View view){
         serverIp = ((EditText)findViewById(R.id.server_ip)).getText().toString();
         Log.d("Main Activity", "IP set");
-        Intent intent = new Intent(this, ScanActivity.class);
+        Intent intent = new Intent(this, ScanSender.class);
         startActivity(intent);
     }
 
