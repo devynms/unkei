@@ -85,6 +85,7 @@ public class ScanActivity extends Activity{
         }
 
         // Create a media file name
+
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         File mediaFile;
 

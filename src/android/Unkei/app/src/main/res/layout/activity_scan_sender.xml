@@ -6,11 +6,4 @@
     android:id="@+id/root"
     tools:context=".ScanSender">
 
-    <ImageButton
-        android:layout_width="200px"
-        android:layout_height="wrap_content"
-        android:id="@+id/button_record"
-        android:layout_gravity="center_vertical|right"
-        android:onClick="onRecordClick"
-        android:src="@drawable/start_recording"/>
 </FrameLayout>
