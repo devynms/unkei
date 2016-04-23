@@ -165,16 +165,18 @@ public class ScanSender extends Activity implements TextureView.SurfaceTextureLi
 
         mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
         mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.CAMCORDER);
-        //mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+        //mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
         mMediaRecorder.setProfile(profile);
 
 
-        File output = getOutputMediaFile();
-        mMediaRecorder.setOutputFile(output.getAbsolutePath());
-        //mMediaRecorder.setMaxDuration(180000); // 3 minutes maximum
+        File output = getOutputMediaDir();//getOutputMediaFile();
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String path = output.getAbsolutePath() + "/Scan_" + timeStamp + ".mp4";
+        mMediaRecorder.setOutputFile(path);
+        mMediaRecorder.setMaxDuration(180000); // 3 minutes maximum
         //mMediaRecorder.setVideoFrameRate(30);
 
-        //mMediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.MPEG_4_SP);
+        //mMediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.);
 
         try {
             mMediaRecorder.prepare();
@@ -188,9 +190,24 @@ public class ScanSender extends Activity implements TextureView.SurfaceTextureLi
         return Uri.fromFile(getOutputMediaFile());
     }
 
+    private static File getOutputMediaDir() {
+
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "UnkeiScans");
+
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                Log.d("Unkei", "failed to create directory");
+                return null;
+            }
+        }
+        return mediaStorageDir;
+    }
+
+
     private static File getOutputMediaFile(){
 
-        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Unkei Scan");
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "UnkeiScans");
 
         // Create the storage directory if it does not exist
         if (! mediaStorageDir.exists()){
