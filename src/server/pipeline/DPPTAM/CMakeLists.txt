@@ -2,7 +2,7 @@
 
 cmake_minimum_required(VERSION 2.8.3)
 project(dpptam)
-add_definitions(-Wall -std=c++11 -Werror=return-type ${PCL_DEFINITIONS})
+add_definitions(-std=c++11 -Werror=return-type ${PCL_DEFINITIONS})
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake)
 set(CMAKE_BUILD_TYPE RelWithDebInfo)
 
@@ -21,6 +21,8 @@ set(DENSE_SOURCE_FILES
                 src/vo_system.cpp
                 src/superpixel.cpp
 		src/main.cpp
+                src/PlyListener.cpp
+#               src/Mesher.cpp
 )
 
 
@@ -30,6 +32,16 @@ set(DENSE_HEADER_FILES
                 include/dpptam/SemiDenseTracking.h
                 include/dpptam/vo_system.h
                 include/dpptam/superpixel.h
+                include/dpptam/PlyListener.h
+#               include/dpptam/Mesher.h
+)
+
+set(MESHER_SOURCE_FILES
+                src/Mesher.cpp
+                src/MesherExec.cpp
+)
+set(MESHER_HEADER_FILES
+                include/dpptam/Mesher.h
 )
 
 find_package(OpenCV REQUIRED)
@@ -58,7 +70,7 @@ else()
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
 message("NO OPTIMIZATION FLAGS")
 endif()
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x -Wall -Wextra -pedantic  -Wcast-qual -Wpointer-arith -Winit-self -Wswitch-default -Wmissing-include-dirs -Wold-style-cast -Wnon-virtual-dtor -Wshadow -Wno-unknown-pragmas")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x ")
 
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x -Wall -Wextra -pedantic  -Wcast-qual -Wpointer-arith -Winit-self -Wswitch-default -Wmissing-include-dirs -Wold-style-cast -Wnon-virtual-dtor -Wshadow -Wno-unknown-pragmas")
 
@@ -69,8 +81,10 @@ link_directories(${PCL_LIBRARY_DIRS})
 add_executable(dpptam ${DENSE_HEADER_FILES} ${DENSE_SOURCE_FILES})
 target_link_libraries(dpptam ${OpenCV_LIBS} ${catkin_LIBRARIES})
 
+add_executable(mesher ${MESHER_HEADER_FILES} ${MESHER_SOURCE_FILES})
+target_link_libraries(mesher ${OpenCV_LIBS} ${catkin_LIBRARIES})
 
- install(PROGRAMS
+install(PROGRAMS
   scripts/run_bag
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )

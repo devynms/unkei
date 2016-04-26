@@ -1,8 +1,16 @@
+<<<<<<< HEAD
 prefix=/home/josh/Workspace/unkei/src/server/pipeline/DPPTAM/devel
+=======
+prefix=/home/acceber/workspaces/ros_catkin/src/dpptam/devel
+>>>>>>> 5ab03bdd275a989aa5192a1cedc2213c5b130135
 
 Name: dpptam
 Description: Description of dpptam
 Version: 0.0.0
 Cflags: 
+<<<<<<< HEAD
 Libs: -L/home/josh/Workspace/unkei/src/server/pipeline/DPPTAM/devel/lib 
+=======
+Libs: -L/home/acceber/workspaces/ros_catkin/src/dpptam/devel/lib 
+>>>>>>> 5ab03bdd275a989aa5192a1cedc2213c5b130135
 Requires: roscpp sensor_msgs image_transport cv_bridge tf

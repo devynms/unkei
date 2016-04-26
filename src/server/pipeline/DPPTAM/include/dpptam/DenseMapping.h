@@ -50,10 +50,13 @@ using namespace std;
 #include <opencv2/opencv.hpp>
 #include "opencv2/imgproc/imgproc.hpp"
 
+#include <boost/thread.hpp>
+
 
 class DenseMapping  :public Imagenes {
   public:
     DenseMapping();
+    ~DenseMapping();
 
     static boost::mutex mutex;
 
@@ -91,6 +94,12 @@ class DenseMapping  :public Imagenes {
     float limit_ratio_sing_val;
     float limit_normalized_residual;
     int matchings_active_search;
+
+    //KEYWORD 
+    bool ply_ready;
+    char ply_file[1024];
+    boost::mutex ply_mutex;
+    boost::condition_variable ply_cond;
 
 private:
 

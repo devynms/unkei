@@ -94,9 +94,10 @@ public class MainActivity extends AppCompatActivity {
                 String username = "user";
                 String password = "pass";
 
+                toServer.flush();
                 toServer.writeShort(username.length());
                 toServer.writeShort(password.length());
-                toServer.writeShort(2); // cmd 2: request user info
+                toServer.writeShort(1); // cmd 1: request user info
                 toServer.writeShort(8); // 64 bit command content
                 toServer.writeUTF(username);
                 toServer.writeUTF(password);
@@ -107,8 +108,11 @@ public class MainActivity extends AppCompatActivity {
                 int dataLen = fromServer.readInt();
                 byte[] jsonBytes = new byte[dataLen];
                 fromServer.readFully(jsonBytes);
+                String jsonString = new String(jsonBytes);
+                Log.d("JSON DUMP",jsonString);
             } catch (IOException io) {
-                Log.e("Main", "Failed to connect to server" + io.getMessage());
+                Log.e("Main", "Failed to handle server" + io.getMessage());
+                io.printStackTrace();
             }
         }
 

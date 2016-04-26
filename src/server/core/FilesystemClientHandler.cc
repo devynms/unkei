@@ -20,7 +20,6 @@ void
 FilesystemClientHandler::handle()
 {
   using std::vector;
-  using std::cout;
   using std::endl;
 
   int16_t uname_len = this->connection->ReceiveInt16();
@@ -59,7 +58,6 @@ FilesystemClientHandler::ResourceRequestResponse(
 {
   using namespace std;
   using json = nlohmann::json;
-  int i = 0;
 
   CloudFilesystemView view;
   auto uname = string(begin(uname_data), end(uname_data));
@@ -76,27 +74,19 @@ FilesystemClientHandler::ResourceRequestResponse(
   resourceMetaFile >> metaJ;
   resourceMetaFile.close();
 
-  if (!metaJ["available"].is_null() && !metaJ["available"].get<bool>()) {
-    string meta_data = metaJ.dump();
-    this->connection->SendInt32(3); // code: resource incomplete
-    this->connection->SendInt32(meta_data.length()); // length of meta file
-    this->connection->SendInt32(0); // length of resource file
-    this->connection->SendAll(meta_data);
-  } else {
-    string meta_data = metaJ.dump();
-    fstream resource_file(view.LookupResourceFile(uname, resource), fstream::in);
-    std::vector<uint8_t> resource;
-    int byte;
-    while ((byte = resource_file.get()) != EOF) {
-      resource.push_back(byte);
-    }
-    resource_file.close();
-    this->connection->SendInt32(0); // code: OK
-    this->connection->SendInt32(meta_data.length());
-    this->connection->SendInt32(resource.size());
-    this->connection->SendAll(meta_data);
-    this->connection->SendAll(resource);
+  string meta_data = metaJ.dump();
+  fstream resource_file(view.LookupResourceFile(uname, resource), fstream::in);
+  std::vector<uint8_t> resource_bytes;
+  int byte;
+  while ((byte = resource_file.get()) != EOF) {
+    resource_bytes.push_back(byte);
   }
+  resource_file.close();
+  this->connection->SendInt32(0); // code: OK
+  this->connection->SendInt32(meta_data.length());
+  this->connection->SendInt32(resource_bytes.size());
+  this->connection->SendAll(meta_data);
+  this->connection->SendAll(resource_bytes);
 }
 
 static int64_t
