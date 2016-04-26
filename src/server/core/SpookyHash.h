@@ -1,3 +1,6 @@
+#ifndef _SERVER_CORE_SPOOKY_HASH_H_
+#define _SERVER_CORE_SPOOKY_HASH_H_
+
 //
 // SpookyHash: a 128-bit noncryptographic hash function
 // By Bob Jenkins, public domain
@@ -25,9 +28,6 @@
 // the CRCs of wholes.  There are also cryptographic hashes, but those are even
 // slower than MD5.
 //
-
-#ifndef _SERVER_CORE_SPOOKY_HASH_H_
-#define _SERVER_CORE_SPOOKY_HASH_H_
 
 #include <stddef.h>
 
@@ -299,4 +299,4 @@ private:
 };
 
 #endif
-/* defined _SERVER_CORE_SPOOKY_HASH_H_ */
+
