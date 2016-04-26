@@ -86,5 +86,10 @@ public class ServerSender extends AppCompatActivity {
 
         }
 
+        protected void onPostExecute(Void result) {
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
+        }
     }
 }
