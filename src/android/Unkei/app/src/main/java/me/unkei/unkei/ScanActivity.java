@@ -1,12 +1,12 @@
 package me.unkei.unkei;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -15,6 +15,7 @@ import android.view.TextureView;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,171 +23,114 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-/** written by josh, inspired in part by the google sample on media recording from a camera*/
 public class ScanActivity extends Activity implements TextureView.SurfaceTextureListener {
 
     private Camera mCamera;
-    private TextureView mPreview;
+    private TextureView mTextureView;
+
     private MediaRecorder mMediaRecorder;
 
     private ImageButton recordButton;
     private Boolean isRecording;
     private Boolean isReady = false;
 
+    public String outputPath;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mPreview =  new TextureView(this);//(TextureView) findViewById(R.id.surface_view);
-        recordButton = (ImageButton) findViewById(R.id.button_record);
         isRecording = false;
 
-        mPreview.setSurfaceTextureListener(this);
-        setContentView(R.layout.activity_scan);
+        mTextureView = new TextureView(this); //(TextureView) findViewById(R.id.surface_view);
+        mTextureView.setSurfaceTextureListener(this);
+        setContentView(R.layout.activity_scan_sender);
+        FrameLayout root = (FrameLayout) findViewById(R.id.root);
+        root.addView(mTextureView);
+        recordButton = new ImageButton(this);
+        recordButton.setImageResource(R.drawable.start_recording);
+        recordButton.setMinimumWidth(200);
+
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.FILL_PARENT);
+        params.gravity = Gravity.RIGHT;
+        recordButton.setLayoutParams(params);
+
+        recordButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (isRecording) {
+                        recordButton.setImageResource(R.drawable.start_recording);
+                        mMediaRecorder.stop();
+                        mMediaRecorder.reset();
+                        isRecording = false;
+
+                        try {
+                            prepRecorder(mTextureView.getSurfaceTexture());
+                        } catch(IOException e){
+                            Log.e("Recording","can't prep the recorder" + e.getMessage());
+                        }
+
+                        Intent intent = new Intent(getBaseContext(), ServerSender.class);
+                        intent.putExtra("output_path", outputPath);
+                        startActivity(intent);
+                    }
+                    else {
+                        isRecording = true;
+                        recordButton.setImageResource(R.drawable.stop_recoding);
+                        mMediaRecorder.start();
+                    }
+                }
+            });
+
+        root.addView(recordButton);
+
+        setContentView(root);
     }
 
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
         mCamera = Camera.open();
-
-        Camera.Size previewSize = mCamera.getParameters().getPreviewSize();
-        mPreview.setLayoutParams(new FrameLayout.LayoutParams(
+/*
+        Camera.Parameters parameters = mCamera.getParameters();
+        Camera.Size previewSize = mTextureView.getSize //getBestPreviewSize();
+        mTextureView.setLayoutParams(new FrameLayout.LayoutParams(
                 previewSize.width, previewSize.height, Gravity.CENTER));
-
+*/
         try {
             mCamera.setPreviewTexture(surface);
+
         } catch (IOException t) {
-            Log.e("Scan", "Can't set Preview Texture" + t.getMessage());
+            Log.e("Scan", "Unable to set preview texture" + t.getMessage());
         }
 
         mCamera.startPreview();
 
+        try {
+            if(!isReady) {
+                mCamera.unlock();
+                prepRecorder(surface);
+            }
+        } catch (IOException e) {
+            Log.e("Scan", "Unable to prepare Recorder" + e.getMessage());
+        }
     }
 
     @Override
     public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
-
+        // Ignored, the Camera does all the work for us
     }
 
     @Override
     public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
         mCamera.stopPreview();
+        releaseMediaRecorder();
         mCamera.release();
         return true;
     }
 
     @Override
     public void onSurfaceTextureUpdated(SurfaceTexture surface) {
-        onSurfaceTextureAvailable(surface,mPreview.getWidth(),mPreview.getHeight());
-    }
-
-    public void onRecordClick(View view){
-        if(!isRecording){
-            //start recording
-            new MediaRecorderPrep().execute(null,null,null);
-        }
-        else{
-            //stop recording and save video
-            mMediaRecorder.stop();
-            releaseMediaRecorder();
-            //mCamera.lock();
-
-            recordButton.setImageResource(R.drawable.start_recording);
-            isRecording = false;
-            releaseCamera();
-        }
-    }
-
-    private void releaseMediaRecorder(){
-        if(mMediaRecorder != null){
-            mMediaRecorder.reset();
-            mMediaRecorder.release();
-            mMediaRecorder = null;
-            //mCamera.lock();
-        }
-    }
-
-    private void releaseCamera(){
-        if(mCamera != null){
-            mCamera.release();
-            mCamera = null;
-        }
-    }
-
-    private boolean prepRecorder(){
-        mCamera = Camera.open();
-        Camera.Parameters parameters = mCamera.getParameters();
-        Camera.Size previewSize = parameters.getPreviewSize();
-
-        CamcorderProfile profile = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH);
-        profile.videoFrameWidth = previewSize.width;
-        profile.videoFrameHeight = previewSize.height;
-
-
-        /*Camera.Size optimalSize = getBestPreviewSize(parameters.getSupportedPreviewSizes(), mPreview.getWidth(), mPreview.getHeight());
-
-        CamcorderProfile profile = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH);
-        profile.videoFrameWidth = optimalSize.width;
-        profile.videoFrameHeight = optimalSize.height;
-
-        parameters.setPreviewSize(profile.videoFrameWidth, profile.videoFrameHeight);
-        mCamera.setParameters(parameters);
-
-        try {
-            mCamera.setPreviewTexture(mPreview.getSurfaceTexture());
-        } catch (IOException e){
-            Log.e("Scan", "Surface Texture unavailable" + e.getMessage());
-            return false;
-        }
-        */
-        mMediaRecorder = new MediaRecorder();
-        //mCamera.unlock();
-        mMediaRecorder.setCamera(mCamera);
-        //we don't need to record audio but apparently we need to define the source
-        mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.CAMCORDER);
-        mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
-        mMediaRecorder.setProfile(profile);
-        mMediaRecorder.setOutputFile(getOutputMediaFile().getPath());
-
-        try {
-            mMediaRecorder.prepare();
-        } catch (IllegalStateException e){
-            Log.d("Scan", "preparing media recorder" + e.getMessage());
-            releaseMediaRecorder();
-            return false;
-        } catch (IOException e){
-            Log.d("Scan", "preparing media recorder" + e.getMessage());
-            releaseMediaRecorder();
-            return false;
-        }
-        return true;
-    }
-
-    /** Create a file Uri for saving an image or video */
-    private static Uri getOutputMediaFileUri(){
-        return Uri.fromFile(getOutputMediaFile());
-    }
-
-    /** Create a File for saving an image or video */
-    private static File getOutputMediaFile(){
-        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Unkei Scans");
-        // This location works best if you want the created images to be shared
-        // between applications and persist after your app has been uninstalled.
-
-        // Create the storage directory if it does not exist
-        if (! mediaStorageDir.exists()){
-            if (! mediaStorageDir.mkdirs()){
-                Log.d("Unkei Storage", "failed to create directory");
-                return null;
-            }
-        }
-
-        // Create a media file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        File mediaFile;
-        mediaFile = new File(mediaStorageDir.getPath() + File.separator + "SCAN_"+ timeStamp + ".mp4");
-
-        return mediaFile;
+        // Update your view here!
     }
 
     public static Camera.Size getBestPreviewSize(List<Camera.Size> sizes, int previewWidth, int previewHeight){
@@ -213,34 +157,88 @@ public class ScanActivity extends Activity implements TextureView.SurfaceTexture
         return optimal;
     }
 
-    /*@Override
-    protected void onPause(){
-        super.onPause();
-        //free hardware and software
-        releaseMediaRecorder();
-        releaseCamera();
-    }*/
-
-    class MediaRecorderPrep extends AsyncTask<Void,Void,Boolean> {
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            if(isReady){
-                mMediaRecorder.start();
-                isRecording = true;
-            } else{
-                releaseMediaRecorder();
-                return false;
-            }
-            return  true;
+    private void prepRecorder(SurfaceTexture surfaceTexture) throws IOException {
+        if(mCamera == null){
+            mCamera = Camera.open();
+            mCamera.unlock();
         }
 
-        @Override
-        protected  void onPostExecute(Boolean result){
-            if(!prepRecorder()){
-                ScanActivity.this.finish();
+        if(mMediaRecorder == null)
+            mMediaRecorder = new MediaRecorder();
+
+        mMediaRecorder.setCamera(mCamera);
+
+        CamcorderProfile profile = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH);
+
+        mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
+        mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.CAMCORDER);
+        //mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
+        mMediaRecorder.setProfile(profile);
+
+
+        File output = getOutputMediaDir();//getOutputMediaFile();
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        outputPath = output.getAbsolutePath() + "/Scan_" + timeStamp + ".mp4";
+        mMediaRecorder.setOutputFile(outputPath);
+        mMediaRecorder.setMaxDuration(180000); // 3 minutes maximum
+        //mMediaRecorder.setVideoFrameRate(30);
+
+        //mMediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.);
+
+        try {
+            mMediaRecorder.prepare();
+        } catch (IllegalStateException e){
+            Log.e("Recorder", "Couldn't prepare Recorder");
+        }
+        isReady = true;
+    }
+
+    private static Uri getOutputMediaFileUri(){
+        return Uri.fromFile(getOutputMediaFile());
+    }
+
+    private static File getOutputMediaDir() {
+
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "UnkeiScans");
+
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                Log.d("Unkei", "failed to create directory");
+                return null;
             }
-            recordButton.setImageResource(R.drawable.stop_recoding);
+        }
+        return mediaStorageDir;
+    }
+
+
+    private static File getOutputMediaFile(){
+
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "UnkeiScans");
+
+        // Create the storage directory if it does not exist
+        if (! mediaStorageDir.exists()){
+            if (! mediaStorageDir.mkdirs()){
+                Log.d("Unkei", "failed to create directory");
+                return null;
+            }
+        }
+
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        File mediaFile;
+
+        mediaFile = new File(mediaStorageDir.getPath() + File.separator + "SCAN_"+ timeStamp + ".mp4");
+
+        return mediaFile;
+    }
+
+    private void releaseMediaRecorder(){
+        if(mMediaRecorder != null){
+            mMediaRecorder.reset();
+            mMediaRecorder.release();
+            mMediaRecorder = null;
         }
     }
+
 }

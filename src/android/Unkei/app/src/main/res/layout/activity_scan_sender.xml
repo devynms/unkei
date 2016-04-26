@@ -4,6 +4,6 @@
     android:layout_height="match_parent"
     android:screenOrientation="landscape"
     android:id="@+id/root"
-    tools:context=".ScanSender">
+    tools:context=".ScanActivity">
 
 </FrameLayout>

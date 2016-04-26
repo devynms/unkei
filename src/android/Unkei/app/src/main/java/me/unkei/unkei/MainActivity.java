@@ -35,12 +35,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void calibrate(View view){
-        Intent intent = new Intent(this, ScanActivity.class);
+        Intent intent = new Intent(this, CalibrationActivity.class);
         startActivity(intent);
     }
 
     public void edit(View view){
-        Intent intent = new Intent(this, ScanSender.class);
+        Intent intent = new Intent(this, Gallery.class);
         startActivity(intent);
     }
 
