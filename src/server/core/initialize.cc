@@ -9,6 +9,28 @@
 using namespace std;
 using json = nlohmann::json;
 
+void
+PushFile(string uname, string name, string data)
+{
+  json fileMetaData = {
+    {"resource_name", name},
+    {"timestamp", 1LL},
+    {"size", data.length()},
+    {"filetype", "txt"}
+  };
+  string path = resource_path(uname, name);
+  string mpath = path + ".META";
+  CloudFilesystemView view;
+  view.Prepare(path);
+  view.Prepare(mpath);
+  fstream file(path, fstream::out);
+  file << data;
+  file.close();
+  fstream mfile(mpath, fstream::out);
+  mfile << fileMetaData.dump();
+  mfile.close();
+}
+
 int main()
 {
   string uname = "user";
@@ -17,7 +39,7 @@ int main()
   view.Prepare(rpath);
   json infoJ = {
     {"username", "user"},
-    {"data", json::array()},
+    {"data", {"hello", "world"}},
     {"timestamp", 1}
   };
   cout << rpath << endl;
@@ -25,4 +47,7 @@ int main()
   fstream file(rpath, fstream::out);
   file << infoJ.dump();
   file.close();
+
+  PushFile("user", "hello", "HELLO world");
+  PushFile("user", "world", "hello WORLD");
 }

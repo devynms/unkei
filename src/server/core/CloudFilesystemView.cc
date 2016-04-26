@@ -54,29 +54,29 @@ CloudFilesystemView::ResourceExists(
   return file_exists(rpath);
 }
 
-std::fstream&&
+std::string
 CloudFilesystemView::LookupResourceFile(
   std::string username,
   std::string resource_name)
 {
   std::string rpath = resource_path(username, resource_name);
-  return std::move(std::fstream(rpath, std::ios_base::in));
+  return rpath;
 }
 
-std::fstream&&
+std::string
 CloudFilesystemView::LookupResourceMetaFile(
   std::string username,
   std::string resource_name)
 {
   std::string rpath = resource_path(username, resource_name) + ".META";
-  return std::move(std::fstream(rpath, std::ios_base::in));
+  return rpath;
 }
 
-std::fstream&&
+std::string
 CloudFilesystemView::LookupUserInfoFile(std::string username)
 {
   std::string rpath = "info/" + resource_path(username, "info");
-  return std::move(std::fstream(rpath, std::ios_base::in));
+  return rpath;
 }
 
 void

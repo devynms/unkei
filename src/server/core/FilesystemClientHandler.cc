@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <iostream>
 
 FilesystemClientHandler::FilesystemClientHandler(ClientConnection* connection)
     : connection(connection)
@@ -19,6 +20,8 @@ void
 FilesystemClientHandler::handle()
 {
   using std::vector;
+  using std::cout;
+  using std::endl;
 
   int16_t uname_len = this->connection->ReceiveInt16();
   int16_t pwd_len = this->connection->ReceiveInt16();
@@ -37,13 +40,16 @@ FilesystemClientHandler::handle()
     return;
   }
 
-  if (cmd_id == 1 && cmd_len == 64) {
+  if (cmd_id == 1 && cmd_len == 8) {
+    cout << "cmd 1" << endl;
     // cmd_data is 64 bit timestamp
     this->UserInfoRequestResponse(uname_data, cmd_data);
   } else if (cmd_id == 2) {
+    cout << "cmd 2" << endl;
     // cmd_data is resource name, cmd_len bytes
     this->ResourceRequestResponse(uname_data, cmd_data);
   } else if (cmd_id == 3) {
+    cout << "cmd 3" << endl;
     // cmd_data is resource name, cmd_len bytes
     this->DeleteResourceRequestResponse(uname_data, cmd_data);
   }
@@ -56,8 +62,10 @@ FilesystemClientHandler::ResourceRequestResponse(
 {
   using namespace std;
   using json = nlohmann::json;
+  int i = 0;
 
   CloudFilesystemView view;
+  cout << "check " << i++ << endl;
   auto uname = string(begin(uname_data), end(uname_data));
   auto resource = string(begin(cmd_data), end(cmd_data));
   if (!view.ResourceExists(uname, resource)) {
@@ -66,9 +74,9 @@ FilesystemClientHandler::ResourceRequestResponse(
     this->connection->SendInt32(0);
     return;
   }
+  cout << "check " << i++ << endl;
 
-  fstream resourceMetaFile =
-    move(view.LookupResourceMetaFile(uname, resource));
+  fstream resourceMetaFile(view.LookupResourceMetaFile(uname, resource), fstream::in);
   json metaJ;
   resourceMetaFile >> metaJ;
   resourceMetaFile.close();
@@ -81,8 +89,9 @@ FilesystemClientHandler::ResourceRequestResponse(
     this->connection->SendInt32(0); // length of resource file
     this->connection->SendAll(meta_data);
   } else {
+  cout << "check " << i++ << endl;
     string meta_data = metaJ.dump();
-    fstream resource_file = move(view.LookupResourceFile(uname, resource));
+    fstream resource_file(view.LookupResourceFile(uname, resource), fstream::in);
     std::vector<uint8_t> resource;
     int byte;
     while ((byte = resource_file.get()) != EOF) {
@@ -95,6 +104,7 @@ FilesystemClientHandler::ResourceRequestResponse(
     this->connection->SendAll(meta_data);
     this->connection->SendAll(resource);
   }
+  cout << "check " << i++ << endl;
 }
 
 static int64_t
@@ -117,13 +127,13 @@ FilesystemClientHandler::UserInfoRequestResponse(
 
   CloudFilesystemView view;
   auto uname = string(begin(uname_data), end(uname_data));
-  fstream info_file = move(view.LookupUserInfoFile(uname));
+  fstream info_file(view.LookupUserInfoFile(uname), fstream::in);
   json userJ;
   info_file >> userJ;
   info_file.close();
   int64_t server_timestamp = userJ["timestamp"].get<int64_t>();
   int64_t client_timestamp = Vector8ToInt64(cmd_data);
-  if (server_timestamp > client_timestamp) {
+  if (server_timestamp <= client_timestamp) {
     this->connection->SendInt32(0); // code: OK
     this->connection->SendInt32(0); // no data necessary
   } else {
