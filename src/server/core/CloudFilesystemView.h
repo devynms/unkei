@@ -24,6 +24,9 @@ class CloudFilesystemView
 
   void
   Prepare(std::string path);
+
+  void
+  Prepare(std::string username, std::string resource_name, bool meta=false);
 };
 
 #endif

@@ -3,7 +3,7 @@ server: ClientConnection.cc ClientConnection.h ClientHandler.h \
 		FilesystemClientHandler.cc JobClientHandler.cc JobClientHandler.h \
 		ServerListener.cc ServerListener.h SpookyHash.h SpookyHash.cc json.hpp \
 		server.cc
-	g++ -lpthread -pthread -g -std=c++11 -Wall ClientConnection.cc CloudFilesystemView.cc\
+	g++ -lpthread -pthread -fpermissive -std=c++11 -Wall ClientConnection.cc CloudFilesystemView.cc\
 		FilesystemClientHandler.cc JobClientHandler.cc ServerListener.cc \
 		SpookyHash.cc server.cc -o server
 

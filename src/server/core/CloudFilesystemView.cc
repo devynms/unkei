@@ -86,3 +86,14 @@ CloudFilesystemView::Prepare(std::string path)
   string cmd = string("mkdir -p ") + path.substr(0, path.find_last_of('/'));
   system(cmd.c_str());
 }
+
+void
+CloudFilesystemView::Prepare(std::string username, std::string resource_name, bool meta)
+{
+  using std::string;
+  string resource = resource_path(username, resource_name);
+  if (meta) {
+    resource += ".META";
+  }
+  this->Prepare(resource);
+}
