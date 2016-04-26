@@ -1,0 +1,5 @@
+/home/josh/Workspace/ORB_SLAM2/build/CMakeFiles/ORB_SLAM2.dir
+/home/josh/Workspace/ORB_SLAM2/build/CMakeFiles/mono_kitti.dir
+/home/josh/Workspace/ORB_SLAM2/build/CMakeFiles/mono_tum.dir
+/home/josh/Workspace/ORB_SLAM2/build/CMakeFiles/rgbd_tum.dir
+/home/josh/Workspace/ORB_SLAM2/build/CMakeFiles/stereo_kitti.dir

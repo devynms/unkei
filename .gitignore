@@ -3,3 +3,13 @@
 build/
 externals/
 test/
+.gradle
+src/android/EECS393Project/local.properties
+/.idea
+/build
+/captures
+*.iml
+*.idea
+src/android/EECS393Project/openCVLibrary310/*
+*.idea/*
+
