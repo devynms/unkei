@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# shell script for temporarily setting up environmental variables
+# used to test this project
+
+# run with the command `source ./configure_project`
+# if you do not do so, external variables will only be set
+# in the shell process spawned to run this script
+
+export UNKEI_PROJECT_ROOT=$(readlink -m ..)
+export UNKEI_BUILD_ROOT=$UNKEI_PROJECT_ROOT/build
+export UNKEI_EXTERNAL_ROOT=$UNKEI_PROJECT_ROOT/externals

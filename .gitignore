@@ -1,5 +1,8 @@
 # problems
 .DS_Store/
+build/
+externals/
+test/
 .gradle
 src/android/EECS393Project/local.properties
 /.idea
