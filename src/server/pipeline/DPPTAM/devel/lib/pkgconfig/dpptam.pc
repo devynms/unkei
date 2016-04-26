@@ -1,0 +1,8 @@
+prefix=/home/josh/Workspace/unkei/src/server/pipeline/DPPTAM/devel
+
+Name: dpptam
+Description: Description of dpptam
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/josh/Workspace/unkei/src/server/pipeline/DPPTAM/devel/lib 
+Requires: roscpp sensor_msgs image_transport cv_bridge tf
