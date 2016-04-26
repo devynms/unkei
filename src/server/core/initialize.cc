@@ -16,7 +16,8 @@ PushFile(string uname, string name, string data)
     {"resource_name", name},
     {"timestamp", 1LL},
     {"size", data.length()},
-    {"filetype", "txt"}
+    {"filetype", "txt"},
+    {"available", "true"}
   };
   string path = resource_path(uname, name);
   string mpath = path + ".META";

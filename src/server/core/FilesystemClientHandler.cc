@@ -41,15 +41,12 @@ FilesystemClientHandler::handle()
   }
 
   if (cmd_id == 1 && cmd_len == 8) {
-    cout << "cmd 1" << endl;
     // cmd_data is 64 bit timestamp
     this->UserInfoRequestResponse(uname_data, cmd_data);
   } else if (cmd_id == 2) {
-    cout << "cmd 2" << endl;
     // cmd_data is resource name, cmd_len bytes
     this->ResourceRequestResponse(uname_data, cmd_data);
   } else if (cmd_id == 3) {
-    cout << "cmd 3" << endl;
     // cmd_data is resource name, cmd_len bytes
     this->DeleteResourceRequestResponse(uname_data, cmd_data);
   }
@@ -65,7 +62,6 @@ FilesystemClientHandler::ResourceRequestResponse(
   int i = 0;
 
   CloudFilesystemView view;
-  cout << "check " << i++ << endl;
   auto uname = string(begin(uname_data), end(uname_data));
   auto resource = string(begin(cmd_data), end(cmd_data));
   if (!view.ResourceExists(uname, resource)) {
@@ -74,22 +70,19 @@ FilesystemClientHandler::ResourceRequestResponse(
     this->connection->SendInt32(0);
     return;
   }
-  cout << "check " << i++ << endl;
 
   fstream resourceMetaFile(view.LookupResourceMetaFile(uname, resource), fstream::in);
   json metaJ;
   resourceMetaFile >> metaJ;
   resourceMetaFile.close();
-  bool ready = metaJ["available"].get<bool>();
 
-  if (!ready) {
+  if (!metaJ["available"].is_null() && !metaJ["available"].get<bool>()) {
     string meta_data = metaJ.dump();
     this->connection->SendInt32(3); // code: resource incomplete
     this->connection->SendInt32(meta_data.length()); // length of meta file
     this->connection->SendInt32(0); // length of resource file
     this->connection->SendAll(meta_data);
   } else {
-  cout << "check " << i++ << endl;
     string meta_data = metaJ.dump();
     fstream resource_file(view.LookupResourceFile(uname, resource), fstream::in);
     std::vector<uint8_t> resource;
@@ -104,7 +97,6 @@ FilesystemClientHandler::ResourceRequestResponse(
     this->connection->SendAll(meta_data);
     this->connection->SendAll(resource);
   }
-  cout << "check " << i++ << endl;
 }
 
 static int64_t
