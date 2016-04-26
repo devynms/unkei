@@ -46,6 +46,8 @@ using namespace std;
 #include <dpptam/DenseMapping.h>
 #include <dpptam/SemiDenseTracking.h>
 #include <dpptam/SemiDenseMapping.h>
+//KEYWORD
+#include <dpptam/PlyListener.h>
 
 class vo_system
 {
@@ -55,7 +57,7 @@ public:
 
     void imgcb(const sensor_msgs::Image::ConstPtr& msg);
 
-
+    PlyListener ply_listener;
     DenseMapping dense_mapper;
     SemiDenseTracking semidense_tracker;
     SemiDenseMapping semidense_mapper;

@@ -119,6 +119,7 @@ using namespace std;
 
 
     ros::spin();
+    cout << "Shutting down Ros...\n";
     ros::shutdown();
     return  0;
  }

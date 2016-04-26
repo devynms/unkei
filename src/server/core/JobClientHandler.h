@@ -1,7 +1,8 @@
 #ifndef _SERVER_CORE_JOB_CLIENT_HANDLER_H_
 #define _SERVER_CORE_JOB_CLIENT_HANDLER_H_
 
-#include "ClientHnadler.h"
+#include "ClientHandler.h"
+#include "ClientConnection.h"
 
 class JobClientHandler : public ClientHandler
 {

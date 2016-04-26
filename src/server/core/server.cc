@@ -2,6 +2,7 @@
 #include "ClientConnection.h"
 #include "ClientHandler.h"
 #include "FilesystemClientHandler.h"
+#include "JobClientHandler.h"
 
 #include <thread>
 #include <iostream>
@@ -14,7 +15,7 @@
 #define EVER ;;
 
 static const int FILESYSTEM_LISTENER_PORT = 43230;
-static const int JOB_LISTENER_PORT = 42231;
+static const int JOB_LISTENER_PORT = 43231;
 
 void Register(ClientHandler* handler);
 
@@ -67,7 +68,7 @@ int main()
   std::thread filesystem_listen_thread([&]() {
     for (EVER) {
       auto connection = filesystem_listener.Accept();
-      std::cout << "accept" << std::endl;
+      // std::cout << "accept" << std::endl;
       auto handler = new FilesystemClientHandler(connection);
       Register(handler);
     }
@@ -76,7 +77,8 @@ int main()
   std::thread job_listen_thread([&]() {
     for (EVER) {
       auto connection = job_listener.Accept();
-      delete connection;
+      auto handler = new JobClientHandler(connection);
+      Register(handler);
     }
   });
 

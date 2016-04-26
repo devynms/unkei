@@ -34,7 +34,7 @@ public class ScanActivity extends Activity implements TextureView.SurfaceTexture
     private Boolean isRecording;
     private Boolean isReady = false;
 
-    public String outputPath;
+    public File outputFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +71,7 @@ public class ScanActivity extends Activity implements TextureView.SurfaceTexture
                         }
 
                         Intent intent = new Intent(getBaseContext(), ServerSender.class);
-                        intent.putExtra("output_path", outputPath);
+                        intent.putExtra("output_path", outputFile);
                         startActivity(intent);
                     }
                     else {
@@ -178,8 +178,8 @@ public class ScanActivity extends Activity implements TextureView.SurfaceTexture
 
         File output = getOutputMediaDir();//getOutputMediaFile();
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        outputPath = output.getAbsolutePath() + "/Scan_" + timeStamp + ".mp4";
-        mMediaRecorder.setOutputFile(outputPath);
+        outputFile = new File(output.getPath() + File.separator +"Scan_" + timeStamp + ".mp4");
+        mMediaRecorder.setOutputFile(outputFile.getPath());
         mMediaRecorder.setMaxDuration(180000); // 3 minutes maximum
         //mMediaRecorder.setVideoFrameRate(30);
 
@@ -192,11 +192,11 @@ public class ScanActivity extends Activity implements TextureView.SurfaceTexture
         }
         isReady = true;
     }
-
+/*
     private static Uri getOutputMediaFileUri(){
         return Uri.fromFile(getOutputMediaFile());
     }
-
+*/
     private static File getOutputMediaDir() {
 
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "UnkeiScans");
@@ -211,7 +211,7 @@ public class ScanActivity extends Activity implements TextureView.SurfaceTexture
         return mediaStorageDir;
     }
 
-
+/*
     private static File getOutputMediaFile(){
 
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "UnkeiScans");
@@ -232,7 +232,7 @@ public class ScanActivity extends Activity implements TextureView.SurfaceTexture
 
         return mediaFile;
     }
-
+*/
     private void releaseMediaRecorder(){
         if(mMediaRecorder != null){
             mMediaRecorder.reset();
