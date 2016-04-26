@@ -16,3 +16,4 @@ src/android/EECS393Project/openCVLibrary310/*
 **/CMakeCache.txt
 **/cmake_install.cmake
 **/Makefile
+src/server/pipeline/DPPTAM_unros/data/
