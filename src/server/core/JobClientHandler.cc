@@ -29,13 +29,13 @@ JobClientHandler::handle()
   info >> infoJ;
   info.close();
   int count = infoJ["data"].size();
-  cout << count << endl;
+  //cout << count << endl;
   stringstream rname_stream;
   rname_stream << "resource_" << count;
   string rname = rname_stream.str();
-  cout << rname << endl;
+  //cout << rname << endl;
   infoJ["data"].push_back(rname);
-  cout << infoJ["data"] << endl;
+  //cout << infoJ["data"] << endl;
 
   view.Prepare("user", rname);
   vector<uint8_t> bytes;

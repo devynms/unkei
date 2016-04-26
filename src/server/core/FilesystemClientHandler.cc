@@ -20,7 +20,6 @@ void
 FilesystemClientHandler::handle()
 {
   using std::vector;
-  using std::cout;
   using std::endl;
 
   int16_t uname_len = this->connection->ReceiveInt16();

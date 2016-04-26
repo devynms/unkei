@@ -68,7 +68,7 @@ int main()
   std::thread filesystem_listen_thread([&]() {
     for (EVER) {
       auto connection = filesystem_listener.Accept();
-      std::cout << "accept" << std::endl;
+      // std::cout << "accept" << std::endl;
       auto handler = new FilesystemClientHandler(connection);
       Register(handler);
     }
