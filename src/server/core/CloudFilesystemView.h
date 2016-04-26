@@ -13,13 +13,13 @@ class CloudFilesystemView
   bool
   ResourceExists(std::string username, std::string resource_name);
 
-  std::fstream&&
+  std::string
   LookupResourceFile(std::string username, std::string resource_name);
 
-  std::fstream&&
+  std::string
   LookupResourceMetaFile(std::string username, std::string resource_name);
 
-  std::fstream&&
+  std::string
   LookupUserInfoFile(std::string username);
 
   void
