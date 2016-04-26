@@ -88,6 +88,12 @@ SemiDenseMapping::SemiDenseMapping():do_initialization(1),do_optimization(0), do
     init_keyframes = 12;
 
     fs2.release();
+
+    //KEYWORD
+    boost::unique_lock<boost::mutex> lock(ply_mutex);
+    ply_ready = false;
+    lock.unlock();
+
 }
 
 
@@ -1238,6 +1244,18 @@ void semidense_mapping(DenseMapping *dense_mapper,SemiDenseMapping *semidense_ma
                         points_aux2_print.convertTo(points_aux2_print,CV_64FC1);
 
                         print_plane( points_aux2_print,buffer);
+
+                        //KEYWORD
+                        // notify the monitor thread that dense mapping is done
+                        {
+                            boost::unique_lock<boost::mutex> lock(semidense_mapper->ply_mutex);
+                            strcpy(semidense_mapper->ply_file, buffer);
+                            semidense_mapper->ply_ready = true;
+                            semidense_mapper->ply_cond.notify_all();
+                            cout << "SemiDenseMapping: notified ply_ready=true for file " << semidense_mapper->ply_file << "\n";
+                            lock.unlock();
+                        }
+
                    }
 
 

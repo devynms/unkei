@@ -157,6 +157,12 @@ class SemiDenseMapping  :public Imagenes {
     vector<cv::Mat> points3D_toprint;
 
 
+    //KEYWORD 
+    bool ply_ready;
+    char ply_file[1024];
+    boost::mutex ply_mutex;
+    boost::condition_variable ply_cond;
+
 private:
     vector<cv::Mat> points_new_map;
 

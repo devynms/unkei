@@ -22,6 +22,7 @@
 #include <dpptam/SemiDenseMapping.h>
 #include <dpptam/vo_system.h>
 #include <ros/package.h>
+#include <iostream>
 
 
 DenseMapping::DenseMapping()
@@ -45,7 +46,13 @@ DenseMapping::DenseMapping()
 
     fs2.release();
 
+    //KEYWORD
+    boost::unique_lock<boost::mutex> lock(ply_mutex);
+    ply_ready = false;
+    lock.unlock();
 }
+
+DenseMapping::~DenseMapping() { cout << "Killing DenseMapping\n"; }
 
 void DenseMapping::init_analisis() {
     cv::Mat aux(0,5,CV_32FC1);
@@ -405,10 +412,20 @@ void fullydense_mapping(DenseMapping *pdense_mapper,ros::Publisher *pub_cloud)
          // PRINT SUPERPIXELS
          if (points_superpixels_all.rows > 10)
          {
-
              char buffer_sup[150];
              sprintf (buffer_sup,(ros::package::getPath("dpptam")+"/src/map_and_poses/sup%d.ply").c_str(), pdense_mapper->dense_kf);
              print_plane(points_superpixels_all,buffer_sup);
+
+            //KEYWORD
+            // notify the monitor thread that dense mapping is done
+            {
+                boost::unique_lock<boost::mutex> lock(pdense_mapper->ply_mutex);
+                strcpy(pdense_mapper->ply_file, buffer_sup);
+                pdense_mapper->ply_ready = true;
+                pdense_mapper->ply_cond.notify_all();
+                cout << "DenseMapping: notified ply_read=true for file " << pdense_mapper->ply_file << "\n";
+                lock.unlock();
+            }
          }
          // PRINT SUPERPIXELS
 

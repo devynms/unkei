@@ -77,6 +77,13 @@ vo_system::vo_system(){
         ///launch dense mapper thread
          boost::thread thread_dense_mapper(&ThreadDenseMapper,&dense_mapper,&pub_cloud);
     }
+
+    // KEYWORD
+    // launch monitor ply to pcd thread
+    std::string pcd_dir = ros::package::getPath("dpptam")+"/data/meshes";
+    std::string mesh_file = ros::package::getPath("dpptam")+"/data/out.stl";
+    boost::thread thread_ply_listener(&ThreadPlyListener, &ply_listener, &dense_mapper, &semidense_mapper, pcd_dir, mesh_file);
+    cout << "PlyListener thread launched!\n";
     
     cout << "***    DPPTAM is working     *** " <<  endl << endl;
     cout << "***    Launch the example sequences or use your own sequence / live camera and update the file 'data.yml' with the corresponding camera_path and calibration parameters    ***"  << endl;
@@ -99,11 +106,11 @@ void vo_system::imgcb(const sensor_msgs::Image::ConstPtr& msg)
         current_time = cv_ptr->header.stamp;
         image_frame_aux =  cv_ptr->image.clone();
         cont_frames++;
-    }
-        catch (const cv_bridge::Exception& e)
-        {
+    } 
+    catch (const cv_bridge::Exception& e)
+    {
         ROS_ERROR("cv_bridge exception: %s", e.what());
-        }
+    }
 }
 
 
