@@ -34,7 +34,7 @@ public class ScanActivity extends Activity implements TextureView.SurfaceTexture
     private Boolean isRecording;
     private Boolean isReady = false;
 
-    public File outputFile;
+    private Uri fileUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,14 +64,15 @@ public class ScanActivity extends Activity implements TextureView.SurfaceTexture
                         mMediaRecorder.reset();
                         isRecording = false;
 
-                        try {
-                            prepRecorder(mTextureView.getSurfaceTexture());
-                        } catch(IOException e){
-                            Log.e("Recording","can't prep the recorder" + e.getMessage());
-                        }
+                        //of course this creates a new file
+                        //try {
+                        //    prepRecorder(mTextureView.getSurfaceTexture());
+                        //} catch(IOException e){
+                        //    Log.e("Recording","can't prep the recorder" + e.getMessage());
+                        //}
 
                         Intent intent = new Intent(getBaseContext(), ServerSender.class);
-                        intent.putExtra("output_path", outputFile);
+                        intent.putExtra("output_path", fileUri.getPath());
                         startActivity(intent);
                     }
                     else {
@@ -176,10 +177,11 @@ public class ScanActivity extends Activity implements TextureView.SurfaceTexture
         mMediaRecorder.setProfile(profile);
 
 
-        File output = getOutputMediaDir();//getOutputMediaFile();
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        outputFile = new File(output.getPath() + File.separator +"Scan_" + timeStamp + ".mp4");
-        mMediaRecorder.setOutputFile(outputFile.getPath());
+        //File output = getOutputMediaDir();//getOutputMediaFile();
+        //String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        //outputFile = new File(output.getPath() + File.separator +"Scan"+ timestamp + ".mp4");
+        fileUri = getOutputMediaFileUri();
+        mMediaRecorder.setOutputFile(fileUri.getPath());
         mMediaRecorder.setMaxDuration(180000); // 3 minutes maximum
         //mMediaRecorder.setVideoFrameRate(30);
 
@@ -192,11 +194,11 @@ public class ScanActivity extends Activity implements TextureView.SurfaceTexture
         }
         isReady = true;
     }
-/*
+
     private static Uri getOutputMediaFileUri(){
         return Uri.fromFile(getOutputMediaFile());
     }
-*/
+
     private static File getOutputMediaDir() {
 
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "UnkeiScans");
@@ -211,7 +213,7 @@ public class ScanActivity extends Activity implements TextureView.SurfaceTexture
         return mediaStorageDir;
     }
 
-/*
+
     private static File getOutputMediaFile(){
 
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "UnkeiScans");
@@ -232,7 +234,7 @@ public class ScanActivity extends Activity implements TextureView.SurfaceTexture
 
         return mediaFile;
     }
-*/
+
     private void releaseMediaRecorder(){
         if(mMediaRecorder != null){
             mMediaRecorder.reset();
