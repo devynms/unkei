@@ -8,7 +8,11 @@
 
 # since this file is sourced either use the provided _CATKIN_SETUP_DIR
 # or fall back to the destination set at configure time
+<<<<<<< HEAD
+: ${_CATKIN_SETUP_DIR:=/home/josh/Workspace/unkei/src/server/pipeline/DPPTAM/devel}
+=======
 : ${_CATKIN_SETUP_DIR:=/home/acceber/workspaces/ros_catkin/src/dpptam/devel}
+>>>>>>> 5ab03bdd275a989aa5192a1cedc2213c5b130135
 _SETUP_UTIL="$_CATKIN_SETUP_DIR/_setup_util.py"
 unset _CATKIN_SETUP_DIR
 

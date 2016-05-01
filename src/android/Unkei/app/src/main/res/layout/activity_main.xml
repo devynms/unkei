@@ -50,6 +50,13 @@
             android:text="@string/title_activity_calibrate_main"
             android:onClick="calibrate"/>
 
+        <Button
+            android:id="@+id/prepare_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/prepare"
+            android:onClick="userRequest"/>
+
         <EditText
             android:id="@+id/server_ip"
             android:layout_width="wrap_content"

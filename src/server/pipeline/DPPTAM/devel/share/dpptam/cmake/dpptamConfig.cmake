@@ -67,8 +67,13 @@ set(dpptam_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("TRUE" STREQUAL "TRUE")
+<<<<<<< HEAD
+  set(dpptam_SOURCE_PREFIX /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM)
+  set(dpptam_DEVEL_PREFIX /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM/devel)
+=======
   set(dpptam_SOURCE_PREFIX /home/acceber/workspaces/ros_catkin/src/dpptam)
   set(dpptam_DEVEL_PREFIX /home/acceber/workspaces/ros_catkin/src/dpptam/devel)
+>>>>>>> 5ab03bdd275a989aa5192a1cedc2213c5b130135
   set(dpptam_INSTALL_PREFIX "")
   set(dpptam_PREFIX ${dpptam_DEVEL_PREFIX})
 else()
@@ -103,7 +108,11 @@ if(NOT " " STREQUAL " ")
         message(FATAL_ERROR "Project 'dpptam' specifies '${idir}' as an include dir, which is not found.  It does not exist in '${include}'.  Ask the maintainer 'Alejo <Alejo@todo.todo>' to fix it.")
       endif()
     else()
+<<<<<<< HEAD
+      message(FATAL_ERROR "Project 'dpptam' specifies '${idir}' as an include dir, which is not found.  It does neither exist as an absolute directory nor in '/home/josh/Workspace/unkei/src/server/pipeline/DPPTAM/${idir}'.  Ask the maintainer 'Alejo <Alejo@todo.todo>' to fix it.")
+=======
       message(FATAL_ERROR "Project 'dpptam' specifies '${idir}' as an include dir, which is not found.  It does neither exist as an absolute directory nor in '/home/acceber/workspaces/ros_catkin/src/dpptam/${idir}'.  Ask the maintainer 'Alejo <Alejo@todo.todo>' to fix it.")
+>>>>>>> 5ab03bdd275a989aa5192a1cedc2213c5b130135
     endif()
     _list_append_unique(dpptam_INCLUDE_DIRS ${include})
   endforeach()
@@ -122,7 +131,11 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
+<<<<<<< HEAD
+    foreach(path /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM/devel/lib;/opt/ros/indigo/lib)
+=======
     foreach(path /home/acceber/workspaces/ros_catkin/src/dpptam/devel/lib;/opt/ros/indigo/lib)
+>>>>>>> 5ab03bdd275a989aa5192a1cedc2213c5b130135
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)
