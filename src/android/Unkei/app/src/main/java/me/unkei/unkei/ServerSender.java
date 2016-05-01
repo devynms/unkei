@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 
 import java.io.File;
@@ -33,46 +34,13 @@ public class ServerSender extends AppCompatActivity {
         }
         ip = MainActivity.serverIp;
         SenderTask new_server = (SenderTask) new SenderTask().execute(outputPath);
-        /*boolean success = false;
-        try {
-            success = new_server.get(20, TimeUnit.SECONDS);
+        Thread receiver = new Thread(new ServerListener(new_server.getServerInput(),ip));
+        receiver.start();
+    }
 
-        } catch (Exception e) {
-
-        }
-        if (success) {
-            //spawn check
-            Log.d("ScanActivity", "Starting to send");
-            OutputStream outputStream = new_server.getServerOutput();
-            InputStream inputStream = new_server.getServerInput();
-            FileInputStream in = null;
-            try {
-                Log.d("ScanActivity", "Creating file" + outputPath);
-                in = new FileInputStream(outputPath);
-                // Write to the stream:
-                byte[] buffer = new byte[1024]; // 1KB buffer size
-                int length = 0;
-                Log.d("ScanActivity", "Begining send");
-                while ((length = in.read(buffer, 0, buffer.length)) != -1) {
-                    Log.d("ScanActivity", "sending" + length);
-                    outputStream.write(buffer, 0, length);
-                }
-                Log.d("ScanActivity", "Sent");
-                outputStream.flush();
-            } catch (Exception e) {
-            }
-            ImageView connecting_graphic = (ImageView) findViewById(R.id.imageView);
-            connecting_graphic.setImageResource(R.drawable.check_mark);
-        }
-        //else
-        else {
-            // spawn failure
-            ImageView connecting_graphic = (ImageView) findViewById(R.id.imageView);
-            connecting_graphic.setImageResource(R.drawable.red_x);
-            // spawn back button
-            //nextState = new Intent(this, MainActivity.class);
-        }
-        */
+    public void back(View view){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
 
