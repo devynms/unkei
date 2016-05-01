@@ -54,7 +54,6 @@ class vo_system
 public:
     vo_system();
 
-
     void imgcb(const sensor_msgs::Image::ConstPtr& msg);
 
     PlyListener ply_listener;

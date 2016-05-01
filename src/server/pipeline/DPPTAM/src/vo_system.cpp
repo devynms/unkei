@@ -24,10 +24,7 @@
 
 #include <ros/package.h>
 
-
-vo_system::vo_system(){
-
-
+vo_system::vo_system() {
     ///vo_system launch the three threads, tracking, semidense mapping and dense mapping (3D superpixels)
 
     cv::FileStorage  fs2( (ros::package::getPath("dpptam")+"/src/data.yml").c_str(), cv::FileStorage::READ);

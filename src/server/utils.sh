@@ -11,7 +11,7 @@ ImExt=".png"
 Rate=30
 
 _UnkeiSourceFile=$HOME$UnkeiRoot"/src/server/pipeline/DPPTAM/devel/setup.bash"
-_BagSourceFile=$HOME"/workspaces/ros_catkin/src/BagFromImages/build/devel/setup.bash"
+#_BagSourceFile=$HOME"/workspaces/ros_catkin/src/BagFromImages/build/devel/setup.bash"
 _RosSourceFile="/opt/ros/indigo/setup.bash"
 SourceFiles=($_UnkeiSourceFile $_BagSourceFile $_RosSourceFile)
 
@@ -38,28 +38,20 @@ kill_ros() {
 }
 
 check_ros() {
-    iter=${1:-"0"} #number of times this function has been called
-    
     get_rosmaster_pid 
     
-    if [ -z $rosmaster_pid ]
-    then
-        if [ $iter -lt 1 ]; then
-            roscore & disown
-        fi
-        
+    if [ -z $rosmaster_pid ]; then
+        roscore & disown
         sleep 3
-        
-        if [ $iter -lt 3 ]; then
-            check_ros $((++iter))
-        else
+        get_rosmaster_pid 
+        if [ -z $rosmaster_pid ]; then
             echo "Unable to launch ros"
             exit
         fi
-    else
-        echo "rosmaster up and running. pid: "$rosmaster_pid
-        source_ros
     fi
+    
+    echo "rosmaster up and running. pid: "$rosmaster_pid
+    source_ros
 }
 
 source_ros() {
@@ -78,16 +70,16 @@ purge() {
 }
 
 create_bag() {
-    get_rosmaster_pid
+    check_ros
     if [ $rosmaster_pid ]; then
         #usage: rosrun BagFromImages BagFromImages PATH_TO_IMAGES IMAGE_EXTENSION FREQUENCY PATH_TO_OUPUT_BAG
         imagedir=${1:-$ImageDir}
         bagfile=${2:-$BagFile}
         imext=${3:-$ImExt}
         rate=${4:-$Rate}
-        source_ros
-        echo "running command: rosrun BagFromImages BagFromImages "$imagedir"/ "$imext" "$rate" "$bagfile" & disown"
-        rosrun BagFromImages BagFromImages $imagedir"/" $imext $rate $bagfile & disown
+        #source_ros
+        echo "running command: rosrun BagFromImages BagFromImages "$imagedir" "$imext" "$rate" "$bagfile" & disown"
+        rosrun BagFromImages BagFromImages $imagedir $imext $rate $bagfile & disown
     else
         echo "error: no ros process is executing"
     fi

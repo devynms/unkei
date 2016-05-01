@@ -1,12 +1,13 @@
 # problems
 .DS_Store/
-build/
-externals/
-test/
-.gradle
+**/build/
+**/externals/
+**/test/
+**/*.gradle
 src/android/EECS393Project/local.properties
 /.idea
-/build
+**/build
+**/build/
 /captures
 *.iml
 *.idea
@@ -14,9 +15,10 @@ src/android/EECS393Project/openCVLibrary310/*
 *.idea/*
 **/CMakeFiles/
 **/CMakeCache.txt
+**/*.make
 **/*.cmake
 **/Makefile
-src/server/pipeline/DPPTAM_unros/data/
+**/data/
 **/devel/
 **/catkin_generated/
 **/gtest/
