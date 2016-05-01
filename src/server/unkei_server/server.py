@@ -36,13 +36,16 @@ while True:
     checkROS()
     time.sleep(20)
     create_bag()
-    play_bag()
-    print 'creating stl'
-    r.bind((addr[0], rport))
+    # play_bag()
+    print 'creating .stl file'
     # time.sleep(30)
-    # stl = open('banister_knob.stl', 'rb')
-    # buf = stl.read(1024)
-    # print 'sending stl man'
-    # while(buf):
-        # r.send(buf)
-        # buf = stl.read(1024)
+    r.bind((addr[0], rport))
+    stl = open('banister_knob.stl', 'rb')
+    buf = stl.read(1024)
+    print 'sending .stl file'
+    while(buf):
+        r.send(buf)
+        buf = stl.read(1024)
+    print 'file sent'
+    stl.close()
+    r.close()
