@@ -5,18 +5,26 @@ import time
 import os
 import sys #sys.argv
 
+<<<<<<< HEAD
 UnkeiRoot = '/projects/eecs395/unkei'
 ImageDir = os.path.expanduser('~') + UnkeiRoot + '/src/server/images'
 BagFile = os.path.expanduser('~') + UnkeiRoot + '/src/server/bag.bag'
 LaunchFile = os.path.expanduser('~') + UnkeiRoot + '/src/server/pipeline/DPPTAM/dpptam.launch'
 SourceFile = os.path.expanduser('~') + UnkeiRoot + '/src/server/pipeline/DPPTAM/devel/setup.bash'
+=======
+UnkeiServerRoot = os.getcwd()
+ImageDir = os.path.expanduser('~') + UnkeiServerRoot + '/images'
+BagFile = os.path.expanduser('~') + UnkeiServerRoot + '/pipeline/scan.bag'
+LaunchFile = os.path.expanduser('~') + UnkeiServerRoot + '/pipeline/DPPTAM/dpptam.launch'
+SourceFile = os.path.expanduser('~') + UnkeiServerRoot + '/pipeline/DPPTAM/devel/setup.bash'
+>>>>>>> caada48a18df3942218f640df8aa557e4a7dfdb6
 
 def create_bag():
     try:
         rostopic.rosgraph.Master('/rostopic').getPid()
         create = subprocess.Popen(['rosrun', 'BagFromImages', 'BagFromImages', ImageDir, '.png', '30', BagFile])#.wait()
     except socket.error:
-        print "could not create bag file" 
+        print "could not create bag file"
         #print 'trying again'
         #create_bag()
     else:
@@ -38,7 +46,7 @@ def checkROS():
         launchROS()
     else:
         return True
-    
+
 def launchROS():
     try:
         print "launching", LaunchFile

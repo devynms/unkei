@@ -1,3 +1,4 @@
+#include<fstream>
 #include<iostream>
 #include<ros/ros.h>
 #include<rosbag/bag.h>
@@ -37,6 +38,12 @@ int main(int argc, char **argv)
     double freq = atof(argv[3]);
 
     // Output bag
+
+    //creates the bag if it doesn't exist
+    fstream bag;
+    bag.open(argv[4], fstream::in | fstream::out | fstream::trunc);
+    bag.close();
+    //fills the bag
     rosbag::Bag bag_out(argv[4],rosbag::bagmode::Write);
 
     ros::Time t = ros::Time::now();
