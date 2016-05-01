@@ -26,4 +26,7 @@ src/server/pipeline/DPPTAM_unros/data/
 **/*.pcd
 **/*.ply
 **/*.pyc
+**/*.png
+**/*.jpg
+**/*.a
 **/*~
