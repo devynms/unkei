@@ -13,6 +13,7 @@
 // max seconds to wait on condition variable
 #define TIMEOUT 60 
 #define PCD_COUNT_MAX 30
+#define PLY_TIMEOUT_S 20 
 
 PlyListener::PlyListener() : pcd_count(0) { }
 
@@ -23,16 +24,10 @@ void ThreadPlyListener(PlyListener *pply_listener, DenseMapping *pdense_mapper, 
 
     pply_listener->pcd_dir = pcd_dir;
     pply_listener->mesh_file = mesh_file;
-    int pcd_count_save = 0;
+    pply_listener->tlast = clock(); 
+    pply_listener->pcd_count = 0;
     while(ros::ok())
     {
-        cout << "PlyListener: top of while (acquiring lock on pcd_count_mutex)\n";
-        {
-            boost::unique_lock<boost::mutex> lock(pply_listener->pcd_count_mutex);
-            pcd_count_save = pply_listener->pcd_count;
-            lock.unlock();
-        }
-
         cout << "PlyListener: spawning threads\n";
         boost::thread sup_thread(&thread_ply_listener_sup, pply_listener, pdense_mapper);
         boost::thread map_thread(&thread_ply_listener_map, pply_listener, psemidense_mapper);
@@ -41,69 +36,100 @@ void ThreadPlyListener(PlyListener *pply_listener, DenseMapping *pdense_mapper, 
         cout << "PlyListener: joined threads\n";
 
         {
-            boost::unique_lock<boost::mutex> lock(pply_listener->pcd_count_mutex);
-            //if (pcd_count_save == pply_listener->pcd_count) {
-            if (pply_listener->pcd_count > PCD_COUNT_MAX) {
-                lock.unlock();
-                cout << "PlyListener: Generating mesh from pcd files!\n";
-                //Mesher mesher;
-                //mesher.reconstruct(pcd_dir.c_str(), mesh_file.c_str());
+            //if (pply_listener->pcd_count > PCD_COUNT_MAX) {
+            boost::unique_lock<boost::mutex> pcd_lock(pply_listener->pcd_count_mutex);
+            boost::unique_lock<boost::mutex> tlast_lock(pply_listener->tlast_mutex);
+            cout << "PlyListener: " << pply_listener->pcd_count << " pcd files\n";
+            cout << "PlyListener: " << (float)(clock() - pply_listener->tlast)/CLOCKS_PER_SEC << " seconds since last conversion\n";
+            if ((float)(clock() - pply_listener->tlast)/CLOCKS_PER_SEC > PLY_TIMEOUT_S && pply_listener->pcd_count > 0) {
+                tlast_lock.unlock();
+                pcd_lock.unlock();
                 std::string mesh_exec_path = "/home/acceber/workspaces/ros_catkin/devel/lib/dpptam/mesher";
                 if (execlp(mesh_exec_path.c_str(), mesh_exec_path.c_str(), pcd_dir.c_str(), mesh_file.c_str(), (char *)(NULL)) == -1) {
                     printf("Mesher process failed to execute.\n");
+                } else {
+                    cout << "PlyListener: Generating mesh from pcd files!\n";
                 }
             } else {
-                lock.unlock();
+                tlast_lock.unlock();
+                pcd_lock.unlock();
             }
         }
-        cout << "PlyListener: pcd_count_save = " << pcd_count_save << "\n";
         boost::this_thread::sleep(boost::posix_time::milliseconds(33));
     }
     cout << "PlyListener: Exiting main thread ThreadPlyListener.\n";
 }
 
 void thread_ply_listener_map(PlyListener *pply_listener, SemiDenseMapping *psemidense_mapper) {
-    cout << "Entered thread_ply_listener_map!\n";
-    clock_t t = clock();
-    {
-        boost::unique_lock<boost::mutex> lock(psemidense_mapper->ply_mutex);
-        while (!psemidense_mapper->ply_ready) {
-            if (((float)(clock() - t)/CLOCKS_PER_SEC) > TIMEOUT) {
-                cout << "PlyListener.thread_ply_listener_map: timeout!\n";
-                return;
-            }
-            cout << "PlyListener.thread_ply_listener_map: waiting for ply_ready.\n";
-            psemidense_mapper->ply_cond.wait(lock);
-        }
-        psemidense_mapper->ply_ready = false;
-        lock.unlock();
-    }
+    //cout << "Entered thread_ply_listener_map!\n";
+    //clock_t t = clock();
+    //{
+    //    boost::unique_lock<boost::mutex> lock(psemidense_mapper->ply_mutex);
+    //    while (!psemidense_mapper->ply_ready) {
+    //        if (((float)(clock() - t)/CLOCKS_PER_SEC) > TIMEOUT) {
+    //            cout << "PlyListener.thread_ply_listener_map: timeout!\n";
+    //            return;
+    //        }
+    //        cout << "PlyListener.thread_ply_listener_map: waiting for ply_ready.\n";
+    //        psemidense_mapper->ply_cond.wait(lock);
+    //    }
+    //    psemidense_mapper->ply_ready = false;
+    //    lock.unlock();
+    //}
     
     // convert the new ply files to pcd files
-    cout << "PlyListener.thread_ply_listener_map: converting new ply file\n"; 
-    thread_ply_listener_convert_ply2pcd_file(psemidense_mapper->ply_file, pply_listener);
+    //cout << "PlyListener.thread_ply_listener_map: converting new ply file\n"; 
+    //thread_ply_listener_convert_ply2pcd_file(psemidense_mapper->ply_file, pply_listener);
+    //cout << "PlyListener.thread_ply_listener_map: exiting\n"; 
+
+
+    {
+        boost::unique_lock<boost::mutex> lock(psemidense_mapper->ply_mutex);
+        if (psemidense_mapper->ply_ready) {
+            cout << "PlyListener.thread_ply_listener_map: converting new ply file\n"; 
+            thread_ply_listener_convert_ply2pcd_file(psemidense_mapper->ply_file, pply_listener);
+            psemidense_mapper->ply_ready = false;
+        } else {
+            cout << "PlyListener.thread_ply_listener_map: nothing to convert.\n"; 
+        }
+        lock.unlock();
+    }
     cout << "PlyListener.thread_ply_listener_map: exiting\n"; 
 }
 
 void thread_ply_listener_sup(PlyListener *pply_listener, DenseMapping *pdense_mapper) {
     cout << "Entered thread_ply_listener_sup!\n";
-    clock_t t = clock();
+    //clock_t t = clock();
+    //{
+    //    boost::unique_lock<boost::mutex> lock(pdense_mapper->ply_mutex);
+    //    while (!pdense_mapper->ply_ready) {
+    //        if (((float)(clock() - t)/CLOCKS_PER_SEC) > TIMEOUT) {
+    //            cout << "PlyListener.thread_ply_listener_sup: timeout!\n";
+    //            return;
+    //        }
+    //        pdense_mapper->ply_cond.wait(lock);
+    //    }
+    //    pdense_mapper->ply_ready = false;
+    //    lock.unlock();
+    //}
+
+    // convert the new ply files to pcd files
+    //cout << "PlyListener.thread_ply_listener_sup: converting new ply file\n"; 
+    //thread_ply_listener_convert_ply2pcd_file(pdense_mapper->ply_file, pply_listener);
+    //cout << "PlyListener.thread_ply_listener_sup: exiting\n"; 
+    
+    
     {
         boost::unique_lock<boost::mutex> lock(pdense_mapper->ply_mutex);
-        while (!pdense_mapper->ply_ready) {
-            if (((float)(clock() - t)/CLOCKS_PER_SEC) > TIMEOUT) {
-                cout << "PlyListener.thread_ply_listener_sup: timeout!\n";
-                return;
-            }
-            pdense_mapper->ply_cond.wait(lock);
+        if (pdense_mapper->ply_ready) {
+            cout << "PlyListener.thread_ply_listener_sup: converting new ply file\n"; 
+            thread_ply_listener_convert_ply2pcd_file(pdense_mapper->ply_file, pply_listener);
+            pdense_mapper->ply_ready = false;
+        } else {
+            cout << "PlyListener.thread_ply_listener_sup: nothing to convert.\n"; 
         }
-        pdense_mapper->ply_ready = false;
         lock.unlock();
     }
-    
-    // convert the new ply files to pcd files
-    cout << "PlyListener.thread_ply_listener_sup: converting new ply file\n"; 
-    thread_ply_listener_convert_ply2pcd_file(pdense_mapper->ply_file, pply_listener);
     cout << "PlyListener.thread_ply_listener_sup: exiting\n"; 
 }
 
@@ -130,6 +156,12 @@ void thread_ply_listener_convert_ply2pcd_file(const char *ply_file, PlyListener 
     {
         boost::unique_lock<boost::mutex> lock(pply_listener->pcd_count_mutex);
         snprintf(pcdfile, 512, "%s/points%d.pcd", pply_listener->pcd_dir.c_str(), pply_listener->pcd_count++);
+        lock.unlock();
+    }
+
+    {
+        boost::unique_lock<boost::mutex> lock(pply_listener->tlast_mutex);
+        pply_listener->tlast = clock();
         lock.unlock();
     }
     std::string foo = pply_listener->convert_ply2pcd_file(ply_file, pcdfile);

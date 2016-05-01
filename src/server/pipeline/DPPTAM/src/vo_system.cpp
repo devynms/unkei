@@ -77,8 +77,14 @@ vo_system::vo_system() {
 
     // KEYWORD
     // launch monitor ply to pcd thread
-    std::string pcd_dir = ros::package::getPath("dpptam")+"/data/meshes";
-    std::string mesh_file = ros::package::getPath("dpptam")+"/data/out.stl";
+
+    boost::filesystem::remove_all((ros::package::getPath("dpptam")+"/data/clouds").c_str());
+    boost::filesystem::create_directory((ros::package::getPath("dpptam")+"/data/clouds").c_str());
+    boost::filesystem::remove_all((ros::package::getPath("dpptam")+"/data/meshes").c_str());
+    boost::filesystem::create_directory((ros::package::getPath("dpptam")+"/data/meshes").c_str());
+
+    std::string pcd_dir = ros::package::getPath("dpptam")+"/data/clouds";
+    std::string mesh_file = ros::package::getPath("dpptam")+"/data/meshes/out.stl";
     boost::thread thread_ply_listener(&ThreadPlyListener, &ply_listener, &dense_mapper, &semidense_mapper, pcd_dir, mesh_file);
     cout << "PlyListener thread launched!\n";
     

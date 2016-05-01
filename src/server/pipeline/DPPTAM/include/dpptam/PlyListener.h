@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <time.h>
 
 #include <dpptam/DenseMapping.h>
 #include <dpptam/SemiDenseMapping.h>
@@ -18,6 +19,8 @@ public:
     std::string mesh_file;
     int pcd_count;
     boost::mutex pcd_count_mutex;
+    clock_t tlast;
+    boost::mutex tlast_mutex;
 };
 
 void ThreadPlyListener(PlyListener *pply_listener, DenseMapping *pdense_mapper, SemiDenseMapping *psemidense_mapper, const std::string& pcd_dir, const std::string& mesh_file);
