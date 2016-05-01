@@ -34,7 +34,17 @@ public class ServerSender extends AppCompatActivity {
         }
         ip = MainActivity.serverIp;
         SenderTask new_server = (SenderTask) new SenderTask().execute(outputPath);
-
+        boolean sent = false;
+        try {
+            sent = new_server.get(3,TimeUnit.MINUTES);
+        }
+        catch (Exception e){
+            Log.e("Sender", "Taking too long to send video"+ e.getMessage());
+        }
+        if(sent){
+            Thread receiver = new Thread(new ServerListener(new_server.getServerInput(), ip));
+            receiver.start();
+        }
     }
 
     public void back(View view){
@@ -95,13 +105,6 @@ public class ServerSender extends AppCompatActivity {
             ImageView connecting_graphic = (ImageView) findViewById(R.id.imageView);
             if(result) {
                 connecting_graphic.setImageResource(R.drawable.check_mark);
-                try {
-                    Thread receiver = new Thread(new ServerListener(server.getInputStream(), ip));
-                    receiver.start();
-                }
-                catch (IOException io){
-                    Log.e("Receiving", "problem with receiving thread" + io.getMessage());
-                }
             }
             else{
                 connecting_graphic.setImageResource(R.drawable.red_x);
