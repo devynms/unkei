@@ -1,0 +1,55 @@
+#ifndef MESHER_H
+#define MESHER_H
+
+#include <stdlib.h>
+#include <stdint.h>
+#include <string>
+
+#define _USE_MATH_DEFINES
+#include <math.h>
+
+#include <pcl/point_types.h>
+#include <pcl/io/pcd_io.h>
+#include <pcl/io/vtk_io.h>
+#include <pcl/io/vtk_lib_io.h>
+#include <pcl/kdtree/kdtree_flann.h>
+#include <pcl/filters/voxel_grid.h>
+#include <pcl/features/normal_3d.h>
+#include <pcl/surface/gp3.h>
+
+
+class Mesher {
+public:
+    bool reconstruct(const char *inputDir, const char *outputFile);
+
+    // parameters for greedy triangulation reconstruction
+    struct GreedyTriangulationParams {
+        float search_radius;
+        float mu;
+        int max_nearest_neighbors;
+        float max_surface_angle;
+        float min_angle;
+        float max_angle; 
+        bool normal_consistency;
+        // initialize to pcl-suggested defaults
+        GreedyTriangulationParams() : search_radius(0.025), 
+                                      mu(2.5), 
+                                      max_nearest_neighbors(100), 
+                                      max_surface_angle(M_PI/4), 
+                                      min_angle(M_PI/18), 
+                                      max_angle(2*M_PI/3), 
+                                      normal_consistency(false) { }
+    };
+protected:
+    bool readPointsFromDir(const std::string& inputDir, pcl::PCLPointCloud2::Ptr cloud_blob);
+    void estimateNormals(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, pcl::PointCloud<pcl::PointNormal>::Ptr cloud_with_normals);
+    void filterCloud(pcl::PCLPointCloud2::Ptr cloud_blob, pcl::PCLPointCloud2::Ptr cloud_filtered, float leaf_size);
+    void setGreedyTriangulationParams(pcl::GreedyProjectionTriangulation<pcl::PointNormal>::Ptr gp3);
+
+    struct GreedyTriangulationParams _greedyParams;
+
+private:
+    std::string file_join(const std::string& dir, const std::string& file);
+};
+
+#endif // MESHER_H
