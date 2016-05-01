@@ -21,7 +21,7 @@ public class ServerSender extends AppCompatActivity {
     private static String ip;
     private Socket server;
     private int port = 8080;
-    public File outputFile;
+    public String outputPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +29,11 @@ public class ServerSender extends AppCompatActivity {
         setContentView(R.layout.activity_server_sender);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            outputFile = (File) extras.get("output_path");
+            outputPath = extras.getString("output_path");
         }
         ip = MainActivity.serverIp;
-        SenderTask new_server = (SenderTask) new SenderTask().execute(outputFile.getPath());
-        boolean success = false;
+        SenderTask new_server = (SenderTask) new SenderTask().execute(outputPath);
+        /*boolean success = false;
         try {
             success = new_server.get(20, TimeUnit.SECONDS);
 
@@ -47,8 +47,8 @@ public class ServerSender extends AppCompatActivity {
             InputStream inputStream = new_server.getServerInput();
             FileInputStream in = null;
             try {
-                Log.d("ScanActivity", "Creating file" + outputFile.getPath());
-                in = new FileInputStream(outputFile.getPath());
+                Log.d("ScanActivity", "Creating file" + outputPath);
+                in = new FileInputStream(outputPath);
                 // Write to the stream:
                 byte[] buffer = new byte[1024]; // 1KB buffer size
                 int length = 0;
@@ -72,18 +72,19 @@ public class ServerSender extends AppCompatActivity {
             // spawn back button
             //nextState = new Intent(this, MainActivity.class);
         }
+        */
     }
 
 
     public class SenderTask extends AsyncTask<String,Void,Boolean> {
         private final ProgressDialog dialog = new ProgressDialog(ServerSender.this);
-/*
+
         protected void onPreExecute() {
             this.dialog.setMessage("Sending...");
             this.dialog.setCancelable(false);
             this.dialog.show();
         }
-*/
+
         protected OutputStream getServerOutput(){
             try {
                 return server.getOutputStream();
@@ -105,16 +106,31 @@ public class ServerSender extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(String... strings){
             int i = 0;
-            while(!connectToServer(ip,port) && i < 10000){
+            boolean success = false;
+            while(!success && i < 10000){
+                success = connectToServer(ip,port);
                 i++;
             }
-                sendFile(outputFile.getPath());
+            if(success) {
+                sendFile(outputPath);
                 return true;
+            }
+            else{
+                return false;
+            }
         }
 
-        protected void onPostExecute(Void result) {
+        protected void onPostExecute(Boolean result) {
             if (dialog.isShowing()) {
                 dialog.dismiss();
+            }
+
+            ImageView connecting_graphic = (ImageView) findViewById(R.id.imageView);
+            if(result) {
+                connecting_graphic.setImageResource(R.drawable.check_mark);
+            }
+            else{
+                connecting_graphic.setImageResource(R.drawable.red_x);
             }
         }
 
@@ -145,6 +161,7 @@ public class ServerSender extends AppCompatActivity {
                 }
                 Log.d("ScanActivity", "Sent");
                 outputStream.flush();
+                server.close();
             }
             catch (Exception e){
 
