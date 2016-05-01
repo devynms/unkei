@@ -139,7 +139,7 @@ bool Mesher::reconstruct(const char *inputdir, const char *outputfile) {
 
     // save result as .stl file
     pcl::io::savePolygonFileSTL(outputFile, triangles);
-    DEBUG("Finished saving reconstruction to stl file.\n")    
+    DEBUG1("Finished saving reconstruction to stl file %s.\n", outputFile.c_str())    
     
     return true;
 }

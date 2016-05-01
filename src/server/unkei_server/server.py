@@ -36,6 +36,11 @@ while True:
     checkROS()
     time.sleep(20)
     create_bag()
+
+    time.sleep(10)
+    launchROS()
+    time.sleep(2)
+
     play_bag()
     print 'creating stl'
     r.bind((addr[0], rport))

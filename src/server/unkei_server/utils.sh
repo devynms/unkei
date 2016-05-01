@@ -4,16 +4,16 @@
 UnkeiRoot="/projects/eecs395/unkei"
 ImageDir=$HOME$UnkeiRoot"/src/server/3DScanner_Server/images"
 BagFile=$HOME"/workspaces/ros_catkin/src/dpptam/data/lab_unizar.bag"
-LaunchFile=$HOME"/workspaces/ros_catkin/src/dpptam/dpptam.launch"
+#LaunchFile=$HOME"/workspaces/ros_catkin/src/dpptam/dpptam.launch"
 #BagFile=$HOME$UnkeiRoot"/src/server/pipeline/DPPTAM/data/example.bag"
-#LaunchFile=$HOME$UnkeiRoot"/src/server/pipeline/DPPTAM/dpptam.launch"
+LaunchFile=$HOME$UnkeiRoot"/src/server/pipeline/DPPTAM/dpptam.launch"
 ImExt=".png"
 Rate=30
 
-_UnkeiSourceFile=$HOME$UnkeiRoot"/src/server/pipeline/DPPTAM/devel/setup.bash"
+_DpptamSourceFile=$HOME$UnkeiRoot"/src/server/pipeline/DPPTAM/devel/setup.bash"
 #_BagSourceFile=$HOME"/workspaces/ros_catkin/src/BagFromImages/build/devel/setup.bash"
 _RosSourceFile="/opt/ros/indigo/setup.bash"
-SourceFiles=($_UnkeiSourceFile $_BagSourceFile $_RosSourceFile)
+SourceFiles=($_DpptamSourceFile $_BagSourceFile $_RosSourceFile)
 
 # ros variables
 rosmaster_pid=""
