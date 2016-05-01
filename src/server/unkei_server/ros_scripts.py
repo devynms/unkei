@@ -5,19 +5,11 @@ import time
 import os
 import sys #sys.argv
 
-<<<<<<< HEAD
-UnkeiRoot = '/projects/eecs395/unkei'
+UnkeiServerRoot = os.getcwd()
 ImageDir = os.path.expanduser('~') + UnkeiRoot + '/src/server/images'
 BagFile = os.path.expanduser('~') + UnkeiRoot + '/src/server/bag.bag'
 LaunchFile = os.path.expanduser('~') + UnkeiRoot + '/src/server/pipeline/DPPTAM/dpptam.launch'
 SourceFile = os.path.expanduser('~') + UnkeiRoot + '/src/server/pipeline/DPPTAM/devel/setup.bash'
-=======
-UnkeiServerRoot = os.getcwd()
-ImageDir = os.path.expanduser('~') + UnkeiServerRoot + '/images'
-BagFile = os.path.expanduser('~') + UnkeiServerRoot + '/pipeline/scan.bag'
-LaunchFile = os.path.expanduser('~') + UnkeiServerRoot + '/pipeline/DPPTAM/dpptam.launch'
-SourceFile = os.path.expanduser('~') + UnkeiServerRoot + '/pipeline/DPPTAM/devel/setup.bash'
->>>>>>> caada48a18df3942218f640df8aa557e4a7dfdb6
 
 def create_bag():
     try:
@@ -56,13 +48,6 @@ def launchROS():
     else:
         return launch
 
-
-def sourceROS():
-    pipe = subprocess.Popen(". %s; env" % SourceFile, stdout=subprocess.PIPE, shell=True)
-    output = pipe.communicate()[0]
-    env = dict((line.split("=", 1) for line in output.splitlines()))
-    os.environ.update(env)
-
 if __name__ == '__main__':
     if len(sys.argv) > 1:
         arg = sys.argv[1]
@@ -86,3 +71,4 @@ if __name__ == '__main__':
             print "Unknown argument"
     else:
         print "Please enter the name of the function you wish to run"
+
