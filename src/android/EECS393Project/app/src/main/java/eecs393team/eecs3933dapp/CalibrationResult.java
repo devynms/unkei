@@ -46,7 +46,7 @@ public abstract class CalibrationResult {
 
     public static boolean WriteToSettings(Activity activity, Mat cameraMatrix, Mat distortionCoefficients){
         activity.getApplicationContext().getDir("Settings", Context.MODE_PRIVATE);
-        //FileWriter writer = new FileWriter();
+        //FileWriter writer  = new FileWriter();
         return true;
     }
 

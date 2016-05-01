@@ -23,4 +23,7 @@ src/server/pipeline/DPPTAM_unros/data/
 **/*.zip
 **/*.bag
 **/*.stl
+**/*.pcd
+**/*.ply
 **/*.pyc
+**/*~

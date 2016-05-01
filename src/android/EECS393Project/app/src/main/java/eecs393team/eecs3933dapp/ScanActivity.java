@@ -42,13 +42,20 @@ public class ScanActivity extends Activity{
     private String ip;
     private ServerConnection myConnection;
     private Intent nextState;
-    private Uri fileUri;
+    private String outputPath;
+    private URI fileUri;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan_gallery);
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            outputPath = extras.getString("output_path");
+        }
 
+
+        /*
         //create new Intent
         Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
 
@@ -58,7 +65,7 @@ public class ScanActivity extends Activity{
         intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1); // set the video image quality to high
 
         // start the Video Capture Intent
-        startActivityForResult(intent, CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
+        startActivityForResult(intent, CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);*/
     }
 
     /** Create a file Uri for saving an image or video */
@@ -130,7 +137,7 @@ public class ScanActivity extends Activity{
             FileInputStream in = null;
             try {
                 Log.d("ScanActivity", "Creating file");
-                in = new FileInputStream(fileUri.getPath());
+                in = new FileInputStream(outputPath);
                 // Write to the stream:
                 byte[] buffer = new byte[1024]; // 1KB buffer size
                 int length = 0;
@@ -224,7 +231,7 @@ public class ScanActivity extends Activity{
         }
     }
 
-    public void nextState(View view){
+    /*public void nextState(View view){
         if (nextState.resolveActivity(getPackageManager()) != null) {
             fileUri = getOutputMediaFileUri(MEDIA_TYPE_VIDEO);  // create a file to save the video
             nextState.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);  // set the image file name
@@ -235,7 +242,7 @@ public class ScanActivity extends Activity{
         else {
             startActivity(nextState);
         }
-    }
+    }*/
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {     //spawn start_video button

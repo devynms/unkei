@@ -1,2 +1,6 @@
 - setup-file:
+<<<<<<< HEAD
+    local-name: /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM/devel/setup.sh
+=======
     local-name: /home/acceber/workspaces/ros_catkin/src/dpptam/devel/setup.sh
+>>>>>>> 5ab03bdd275a989aa5192a1cedc2213c5b130135
