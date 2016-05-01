@@ -39,6 +39,8 @@ while True:
 
     time.sleep(10)
     launchROS()
+    time.sleep(5)
+    play_bag()
 
     #r.bind((addr[0], rport))
     # play_bag()
@@ -54,3 +56,4 @@ while True:
     print 'file sent'
     stl.close()
     r.close()
+
