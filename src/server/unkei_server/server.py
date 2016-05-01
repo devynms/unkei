@@ -6,17 +6,19 @@ import time
 from image_converter import img_converter
 from purge import purge
 from ros_scripts import checkROS
-# from ros_scripts import launchROS
+from ros_scripts import launchROS
 from ros_scripts import create_bag
 from ros_scripts import play_bag
+from ros_scripts import startDPPTAM
 
+launchROS()
 s = socket.socket()
 port = 8080
 s.bind(('', port))
 r = socket.socket()
 rport = 8082
 s.listen(5)
-while True:
+while checkROS():
     print 'waiting'
     c, addr = s.accept()
     print 'Connected to', addr
@@ -33,17 +35,10 @@ while True:
     purge('images')
     img_converter('stored.mp4')
     print 'checking ROS...'
-    checkROS()
-    time.sleep(20)
     create_bag()
-
-    time.sleep(10)
-    launchROS()
-    time.sleep(5)
+    time.sleep(60)
+    startDPPTAM()
     play_bag()
-
-    #r.bind((addr[0], rport))
-    # play_bag()
     print 'creating .stl file'
     # time.sleep(30)
     r.bind((addr[0], rport))
