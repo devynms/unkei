@@ -29,6 +29,7 @@ src/android/EECS393Project/openCVLibrary310/*
 **/*.pyc
 **/*.png
 **/*.jpg
+**/*.mp4
 **/*.ppm
 **/*.a
 **/*~
