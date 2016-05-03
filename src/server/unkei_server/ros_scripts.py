@@ -6,7 +6,7 @@ import sys #sys.argv
 
 UnkeiServerRoot = os.getcwd()
 ImageDir = UnkeiServerRoot + '/images'
-BagFile = UnkeiServerRoot + '/pipeline/DPPTAM/data/bags/scan.bag'
+BagFile = UnkeiServerRoot + '/pipeline/DPPTAM/data/bags/lab_unizar.bag'
 LaunchFile = UnkeiServerRoot + '/pipeline/DPPTAM/dpptam.launch'
 SourceFile = UnkeiServerRoot + '/pipeline/DPPTAM/devel/setup.bash'
 
@@ -49,12 +49,12 @@ def launchROS():
 
 def startDPPTAM():
     try:
-        # print "launching", LaunchFile
-        launch = subprocess.Popen(['rosrun', 'dpptam', 'dpptam'])#, stdin=subprocess.PIPE, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+        print "launching", LaunchFile
+        subprocess.Popen(['rosrun', 'dpptam', 'dpptam'])#, stdin=subprocess.PIPE, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
     except:
         raise rostopic.ROSTopicException("Can't launch ROS Master")
     else:
-        return launch
+        return True
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:

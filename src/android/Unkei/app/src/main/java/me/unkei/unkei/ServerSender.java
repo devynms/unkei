@@ -84,7 +84,7 @@ public class ServerSender extends AppCompatActivity {
         protected Boolean doInBackground(String... strings){
             int i = 0;
             boolean success = false;
-            while(!success && i < 3){
+            while(!success && i < 20){
                 success = connectToServer(ip,port);
                 i++;
             }

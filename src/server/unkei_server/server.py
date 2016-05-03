@@ -1,5 +1,6 @@
 import socket
 import os
+import struct
 # import pdb
 # import subprocess
 import time
@@ -47,7 +48,7 @@ while checkROS():
     print 'connecting to device'
     r.connect((addr[0], rport))
     print 'sending size: ' + str(size)
-    r.send(str(size).encode())
+    r.sendall(struct.pack('!i', size))
     buf = stl.read(1024)
     print 'sending .stl file'
     # b = 1024
