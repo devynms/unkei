@@ -1,4 +1,6 @@
 import socket
+import os
+import struct
 # import pdb
 # import subprocess
 import time
@@ -36,19 +38,25 @@ while checkROS():
     img_converter('stored.mp4')
     print 'checking ROS...'
     create_bag()
-    time.sleep(60)
     startDPPTAM()
+    time.sleep(60)
     play_bag()
     print 'creating .stl file'
     # time.sleep(30)
-    r.bind((addr[0], rport))
     stl = open('banister_knob.stl', 'rb')
+    size = os.fstat(stl.fileno()).st_size
+    print 'connecting to device'
+    r.connect((addr[0], rport))
+    print 'sending size: ' + str(size)
+    r.sendall(struct.pack('!i', size))
     buf = stl.read(1024)
     print 'sending .stl file'
+    # b = 1024
     while(buf):
         r.send(buf)
         buf = stl.read(1024)
+        # print b
+        # b = b + 1024
     print 'file sent'
     stl.close()
     r.close()
-

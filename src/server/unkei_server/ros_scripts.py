@@ -1,13 +1,13 @@
 import socket
 import subprocess
 import rostopic
-import time
 import os
 import sys #sys.argv
 
 UnkeiServerRoot = os.getcwd()
 ImageDir =  UnkeiServerRoot + '/images'
-BagFile =  UnkeiServerRoot + '/pipeline/scan.bag'
+#BagFile =  UnkeiServerRoot + '/pipeline/scan.bag'
+BagFile = UnkeiServerRoot + '/pipeline/DPPTAM/data/bags/lab_unizar.bag'
 LaunchFile =  UnkeiServerRoot + '/pipeline/DPPTAM/dpptam.launch'
 SourceFile =  UnkeiServerRoot + '/pipeline/DPPTAM/devel/setup.bash'
 
@@ -43,7 +43,7 @@ def launchROS():
     if not checkROS():
         try:
             print "starting ROS core"
-            subprocess.Popen('roscore')
+            subprocess.Popen(['roscore'])
         except socket.error:
             print "can't start ROS core"
             return False
@@ -51,11 +51,11 @@ def launchROS():
 def startDPPTAM():
     try:
         print "launching", LaunchFile
-        launch = subprocess.Popen(['roslaunch', LaunchFile])#, stdin=subprocess.PIPE, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+        subprocess.Popen(['rosrun', 'dpptam', 'dpptam'])#, stdin=subprocess.PIPE, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
     except:
         raise rostopic.ROSTopicException("Can't launch ROS Master")
     else:
-        return launch
+        return True
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
