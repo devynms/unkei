@@ -7,5 +7,6 @@
    <!-- launch the rosbag node -->
    <!-- <node pkg="rosbag" type="play" name="rosbag" args=" -d 5 $(find dpptam)/data/lab_unizar.bag" /> -->
    <node pkg="rosbag" type="play" name="rosbag" args=" -d 3 /home/acceber/workspaces/ros_catkin/src/dpptam/data/lab_unizar.bag" />
+<!--   <node pkg="rosbag" type="play" name="rosbag" args=" -d 5 /home/josh/Workspace/unkei/src/server/pipeline/DPPTAM/data/bags/scan.bag" /> -->
 
 </launch>

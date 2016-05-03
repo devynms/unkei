@@ -43,7 +43,7 @@ public class Gallery extends AppCompatActivity {
         if (dir.exists() && dir.isDirectory() && dir.listFiles() != null){
             for (String fileName: dir.list()) {
                 Log.d("File is", fileName);
-                if (!fileName.endsWith(".STL")){
+                if (!fileName.endsWith(".stl")){
                     //if the file isn't an STL file, don't allow it to be loaded
                     continue;
                 }
@@ -57,8 +57,8 @@ public class Gallery extends AppCompatActivity {
                     public void onClick(View view) {
                         Intent intent = new Intent(currentActivity, STLViewActivity.class);
                         Button b = (Button)view;
-                        String buttonText = b.getText().toString();
-                        intent.putExtra(path, buttonText);
+                        String filePath = path + File.separator + b.getText().toString();
+                        intent.putExtra("file_path", filePath);
                         startActivity(intent);
                     }
                 });
@@ -66,9 +66,5 @@ public class Gallery extends AppCompatActivity {
         }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
-
-    public File get_path() {
-        return Environment.getExternalStorageDirectory();
     }
 }
