@@ -1,8 +1,9 @@
-€}q(Upkg.installspace.context.pc]q(UPROJECT_NAMEqUPROJECT_CATKIN_DEPENDSqU PKG_CONFIG_LIBRARIES_WITH_PREFIXqUPROJECT_PKG_CONFIG_INCLUDE_DIRSqUCATKIN_PACKAGE_PREFIXqUPROJECT_VERSIONqUPROJECT_SPACE_DIRq	eUtests]q
-U
-TestServerqaUjob_submission]q(UdlqUcodeqUinfo_hdr_fmtqUcmd_data_fmtqUpwdqUrpl_hdr_fmtqUcmd_dataqUdatqUunameqUpwd_lenqUinfo_cmd_lenqU	uname_lenqUinfo_hdrqUconnqUinfo_cmdqeU_setup_util]q(UcommentqUfind_env_hooksqUCMAKE_PREFIX_PATHqUCATKIN_MARKER_FILEq Urollback_env_variablesq!Usystemq"Uprependq#Uenvironq$UENV_VAR_SUBFOLDERSq%U
-assignmentq&Uargsq'U	base_pathq(U	IS_DARWINq)UeUlinesq*Uprepend_env_variablesq+U
-IS_WINDOWSq,eUimage_converter]q-Uimg_converterq.aUserver]q/(Usizeq0Uaddrq1UcUfUstlq2Ubufq3UsUrUpacketq4Uportq5Urportq6eUpurge]q7Upurgeq8aUros_scripts]q9(UUnkeiServerRootq:U
+€}q(Upurge]qUpurgeqaUtests]qU
+TestServerqaUjob_submission]q(UdlqUcodeqUinfo_hdr_fmtq	Ucmd_data_fmtq
+UpwdqUrpl_hdr_fmtqUcmd_dataqUdatqUunameqUpwd_lenqUinfo_cmd_lenqU	uname_lenqUinfo_hdrqUconnqUinfo_cmdqeU_setup_util]q(UcommentqUfind_env_hooksqUCMAKE_PREFIX_PATHqUCATKIN_MARKER_FILEqUrollback_env_variablesqUsystemqUprependqUenvironqUENV_VAR_SUBFOLDERSqU
+assignmentq Uargsq!U	base_pathq"U	IS_DARWINq#UeUlinesq$Uprepend_env_variablesq%U
+IS_WINDOWSq&eUimage_converter]q'Uimg_converterq(aUserver]q)(Uportq*Urportq+Usizeq,Uaddrq-Upacketq.Ubufq/UcUfUstlq0UsUreUpkg.installspace.context.pc]q1(UPROJECT_NAMEq2UPROJECT_CATKIN_DEPENDSq3U PKG_CONFIG_LIBRARIES_WITH_PREFIXq4UPROJECT_PKG_CONFIG_INCLUDE_DIRSq5UCATKIN_PACKAGE_PREFIXq6UPROJECT_VERSIONq7UPROJECT_SPACE_DIRq8eUros_scripts]q9(UUnkeiServerRootq:U
 create_bagq;Uargq<U
 SourceFileq=UImageDirq>U	launchROSq?UBagFileq@UcheckROSqAUstartDPPTAMqBUplay_bagqCU
-LaunchFileqDeUrequest_client]qE(hhhhUmetaqFhhhhhU	resourcesqGhhhUdataqHhUinfoqIUresourceqJUmlqKhheUgenerate_cached_setup]qL(hUfUoutput_filenameqMUpython_pathqNUmodeqOU	workspaceqPeUpkg.develspace.context.pc]qQ(hhhhhhh	eu.
+LaunchFileqDeUrequest_client]qE(hh	hhUmetaqFh
+hhhhU	resourcesqGhhhUdataqHhUinfoqIUresourceqJUmlqKhheUgenerate_cached_setup]qL(hUfUoutput_filenameqMUpython_pathqNUmodeqOU	workspaceqPeUpkg.develspace.context.pc]qQ(h2h3h4h5h6h7h8eu.
