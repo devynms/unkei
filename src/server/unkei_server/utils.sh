@@ -28,7 +28,7 @@ kill_ros() {
     get_rosmaster_pid 
     count=0
     pid=`ps -A | grep ros | awk '{print $1}' | head -n1`
-    while [ "$pid" -a $count -lt 20 ]; do
+    while [ $pid -a $count -lt 20 ]; do
         kill $pid & disown
         pid=`ps -A | grep ros | awk '{print $1}' | head -n1`
         let count=count+1

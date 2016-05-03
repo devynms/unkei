@@ -6,10 +6,10 @@ import os
 import sys #sys.argv
 
 UnkeiServerRoot = os.getcwd()
-ImageDir = os.path.expanduser('~') + UnkeiServerRoot + '/images'
-BagFile = os.path.expanduser('~') + UnkeiServerRoot + '/pipeline/scan.bag'
-LaunchFile = os.path.expanduser('~') + UnkeiServerRoot + '/pipeline/DPPTAM/dpptam.launch'
-SourceFile = os.path.expanduser('~') + UnkeiServerRoot + '/pipeline/DPPTAM/devel/setup.bash'
+ImageDir =  UnkeiServerRoot + '/images'
+BagFile =  UnkeiServerRoot + '/pipeline/scan.bag'
+LaunchFile =  UnkeiServerRoot + '/pipeline/DPPTAM/dpptam.launch'
+SourceFile =  UnkeiServerRoot + '/pipeline/DPPTAM/devel/setup.bash'
 
 def create_bag():
     try:
@@ -60,12 +60,17 @@ def startDPPTAM():
 if __name__ == '__main__':
     if len(sys.argv) > 1:
         arg = sys.argv[1]
-        if arg == "checkROS":
-            checkROS()
-        elif arg == "launchROS":
+        if arg == "checkROS": # check T/F if ros is running
+            if checkROS():
+                print "ROS core is running"
+            else:
+                print "no ROS process is running"
+        elif arg == "launchROS": # start roscore
+            launchROS()
+        elif arg == "startDPPTAM": # launch dpptam
             if len(sys.argv) > 2:
                 LaunchFile = sys.argv[2]
-            launchROS()
+            startDPPTAM() 
         elif arg == "create_bag":
             if len(sys.argv) > 2:
                 ImageDir = sys.argv[2]
