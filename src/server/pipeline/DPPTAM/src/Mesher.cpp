@@ -73,8 +73,22 @@ void Mesher::estimateNormals(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, pcl::Poi
     n.setKSearch (20);
     n.compute (*normals);
 
-    // Concatenate the XYZ and normal fields
     pcl::concatenateFields (*cloud, *normals, *cloud_with_normals);
+}
+
+void Mesher::estimateNormalsMLS(pcl::PointCloud<pcl::PointXYZ>::Ptr inputPoints, pcl::PointCloud<pcl::PointNormal>::Ptr normals) {
+
+    pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>);
+
+    pcl::MovingLeastSquares<pcl::PointXYZ, pcl::PointNormal> mls;
+    mls.setComputeNormals(true);
+
+    mls.setInputCloud(inputPoints);
+    mls.setPolynomialFit(true);
+    mls.setSearchMethod(tree);
+    mls.setSearchRadius(0.03);
+
+    mls.process(*normals);
 }
 
 void Mesher::setGreedyTriangulationParams(pcl::GreedyProjectionTriangulation<pcl::PointNormal>::Ptr gp3) {
@@ -87,15 +101,16 @@ void Mesher::setGreedyTriangulationParams(pcl::GreedyProjectionTriangulation<pcl
     gp3->setNormalConsistency(_greedyParams.normal_consistency);
 }
 
-bool Mesher::reconstruct(const char *inputdir, const char *outputfile) {
+bool Mesher::reconstruct(const char *inputdir) {//, const char *outputfile) {
     std::string inputDir(inputdir);
-    std::string outputFile(outputfile);
-    if (outputFile.find(".stl") == std::string::npos) {
-        printf("output file must be in .stl format!\n");
-        return false;
-    }
+    
+    //std::string outputFile(outputfile);
+    //if (outputFile.find(".stl") == std::string::npos) {
+    //    printf("output file must be in .stl format!\n");
+    //    return false;
+    //}
    
-    // prepare point cloud structures to store points from all input files
+    // read points from file
     pcl::PCLPointCloud2::Ptr cloud_blob(new pcl::PCLPointCloud2());
     if (!readPointsFromDir(inputDir, cloud_blob)) {
         printf ("could not open input directory");
@@ -114,10 +129,11 @@ bool Mesher::reconstruct(const char *inputdir, const char *outputfile) {
 
     // estimate surface normals 
     pcl::PointCloud<pcl::PointNormal>::Ptr cloud_with_normals (new pcl::PointCloud<pcl::PointNormal>);
-    estimateNormals(cloud_filtered, cloud_with_normals);
+    //estimateNormals(cloud_filtered, cloud_with_normals);
+    estimateNormalsMLS(cloud_filtered, cloud_with_normals);
     DEBUG("Finished estimating normals.\n")
     
-    // Create search tree
+    //create search tree
     pcl::search::KdTree<pcl::PointNormal>::Ptr tree2 (new pcl::search::KdTree<pcl::PointNormal>);
     tree2->setInputCloud (cloud_with_normals);
     DEBUG("Finished creating search tree.\n")
@@ -131,15 +147,28 @@ bool Mesher::reconstruct(const char *inputdir, const char *outputfile) {
 
     // do greedy triangulation
     clock_t t = clock();    
-    pcl::PolygonMesh triangles;
+    //pcl::PolygonMesh triangles;
     gp3->setInputCloud (cloud_with_normals);
     gp3->setSearchMethod (tree2);
     gp3->reconstruct (triangles);
     DEBUG1("Finished greedy triangulation in %fs.\n", (float)(clock() - t)/CLOCKS_PER_SEC)
-
-    // save result as .stl file
-    pcl::io::savePolygonFileSTL(outputFile, triangles);
-    DEBUG1("Finished saving reconstruction to stl file %s.\n", outputFile.c_str())    
     
+    return true;
+}
+
+bool Mesher::saveMesh(const std::string& outputFile) {
+
+    if (outputFile.find(".stl") != std::string::npos) {
+        // save result as .stl file
+        pcl::io::savePolygonFileSTL(outputFile, triangles);
+    } else if (outputFile.find(".obj") != std::string::npos) {
+        // save result as .obj file
+        pcl::io::saveOBJFile(outputFile, triangles);
+    } else {
+        printf("output file must be in .stl or .obj format! (missing or unrecognized file extension)\n");
+        return false;
+    }
+
+    DEBUG1("Finished saving reconstruction to file %s.\n", outputFile.c_str())    
     return true;
 }
