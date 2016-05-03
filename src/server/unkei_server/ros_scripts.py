@@ -24,7 +24,7 @@ def create_bag():
 def play_bag():
     try:
         rostopic.rosgraph.Master('/rostopic').getPid()
-        play = subprocess.Popen(['rosbag', 'play', BagFile])#.wait()
+        play = subprocess.Popen(['rosbag', 'play', BagFile]).wait()
     except socket.error:
         raise rostopic.ROSTopicIOException("can't run ORB_SLAM")
     else:

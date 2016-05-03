@@ -24,7 +24,7 @@ distCoeffs: !!opencv-matrix
    rows: 5
    cols: 1
    dt: d
-   data: [ 0.2080456281607261, -0.50477980923673, 0., 0., 0.]
+   data: [ 0.2080456281607261, -0.50477980923673, 0., 0., 1.]
 
 calculate_superpixels: 1
 num_cameras_mapping_th: 9

@@ -24,19 +24,19 @@ void getMesherExecPath(std::string& path) {
     path = std::string(cwd);
     free(cwd);
 
-    if (path.find("DPPTAM") != std::string::npos) {
+    if (path.find("dpptam") != std::string::npos) {
         //nop
     } else if (path.find("pipeline") != std::string::npos) {
-        path += "/DPPTAM";
+        path += "/dpptam";
     } else if (path.find("server") != std::string::npos) {
-        path += "/pipeline/DPPTAM";
+        path += "/pipeline/dpptam";
     } else if (path.find("src") != std::string::npos) {
-        path += "/server/pipeline/DPPTAM";
+        path += "/server/pipeline/dpptam";
     } else if (path.find("unkei") != std::string::npos) {
-        path += "/src/server/pipeline/DPPTAM";
+        path += "/src/server/pipeline/dpptam";
     } else {
         printf("WARNING: current working directory not recognized!\n");
-        path = "/home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM";
+        path = "/home/acceber/projects/eecs395/unkei/src/server/pipeline/dpptam";
     }
     path += "/devel/lib/dpptam/mesher";
 }
@@ -67,7 +67,7 @@ void ThreadPlyListener(PlyListener *pply_listener, DenseMapping *pdense_mapper, 
             if ((float)(clock() - pply_listener->tlast)/CLOCKS_PER_SEC > PLY_TIMEOUT_S && pply_listener->pcd_count > 0) {
                 tlast_lock.unlock();
                 pcd_lock.unlock();
-                std::string mesh_exec_path;//= str_cwd + "/pipeline/DPPTAM/devel/lib/dpptam/mesher";
+                std::string mesh_exec_path;//= str_cwd + "/pipeline/dpptam/devel/lib/dpptam/mesher";
                 getMesherExecPath(mesh_exec_path);
                 if (execlp(mesh_exec_path.c_str(), mesh_exec_path.c_str(), pcd_dir.c_str(), mesh_file.c_str(), (char *)(NULL)) == -1) {
                     printf("Mesher process failed to execute.\n");
