@@ -59,12 +59,17 @@ def startDPPTAM():
 if __name__ == '__main__':
     if len(sys.argv) > 1:
         arg = sys.argv[1]
-        if arg == "checkROS":
-            checkROS()
-        elif arg == "launchROS":
+        if arg == "checkROS": # check T/F if ros is running
+            if checkROS():
+                print "ROS core is running"
+            else:
+                print "no ROS process is running"
+        elif arg == "launchROS": # start roscore
+            launchROS()
+        elif arg == "startDPPTAM": # launch dpptam
             if len(sys.argv) > 2:
                 LaunchFile = sys.argv[2]
-            launchROS()
+            startDPPTAM()
         elif arg == "create_bag":
             if len(sys.argv) > 2:
                 ImageDir = sys.argv[2]

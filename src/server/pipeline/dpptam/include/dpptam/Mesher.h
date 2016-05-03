@@ -9,18 +9,24 @@
 #include <math.h>
 
 #include <pcl/point_types.h>
+#include <pcl/io/io.h>
 #include <pcl/io/pcd_io.h>
 #include <pcl/io/vtk_io.h>
 #include <pcl/io/vtk_lib_io.h>
+#include <pcl/io/obj_io.h>
 #include <pcl/kdtree/kdtree_flann.h>
 #include <pcl/filters/voxel_grid.h>
 #include <pcl/features/normal_3d.h>
 #include <pcl/surface/gp3.h>
-
+#include <pcl/surface/mls.h>
+#include <pcl/pcl_exports.h>
+#include <pcl/PolygonMesh.h>
+#include <pcl/point_cloud.h>
 
 class Mesher {
 public:
-    bool reconstruct(const char *inputDir, const char *outputFile);
+    bool reconstruct(const char *inputDir);//, const char *outputFile);
+    bool saveMesh(const std::string& outputFile);
 
     // parameters for greedy triangulation reconstruction
     struct GreedyTriangulationParams {
@@ -40,9 +46,14 @@ public:
                                       max_angle(2*M_PI/3), 
                                       normal_consistency(false) { }
     };
+
+    // this is where the reconstruction will be saved.
+    pcl::PolygonMesh triangles;
+
 protected:
     bool readPointsFromDir(const std::string& inputDir, pcl::PCLPointCloud2::Ptr cloud_blob);
     void estimateNormals(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, pcl::PointCloud<pcl::PointNormal>::Ptr cloud_with_normals);
+    void estimateNormalsMLS(pcl::PointCloud<pcl::PointXYZ>::Ptr inputPoints, pcl::PointCloud<pcl::PointNormal>::Ptr normals);
     void filterCloud(pcl::PCLPointCloud2::Ptr cloud_blob, pcl::PCLPointCloud2::Ptr cloud_filtered, float leaf_size);
     void setGreedyTriangulationParams(pcl::GreedyProjectionTriangulation<pcl::PointNormal>::Ptr gp3);
 

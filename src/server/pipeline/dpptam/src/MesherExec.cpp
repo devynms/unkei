@@ -7,7 +7,11 @@ int main(int argc, char *argv[]) {
     }
     
     Mesher mesher;
-    mesher.reconstruct(argv[1], argv[2]);
+    mesher.reconstruct(argv[1]);//, argv[2]);
 
+    std::string outputFileBase(argv[2]);
+    mesher.saveMesh(outputFileBase + ".stl");
+    mesher.saveMesh(outputFileBase + ".obj");
+    
     return 0;
 }
