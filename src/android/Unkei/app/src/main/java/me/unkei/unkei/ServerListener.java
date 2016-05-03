@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class ServerListener implements Runnable {
 
@@ -35,7 +37,8 @@ public class ServerListener implements Runnable {
                 Log.d("init STL", "Folder created");
         }
         String path = dir.getAbsolutePath();
-        File stl = new File(path + "/01.stl");
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        File stl = new File(path + File.separator + "MESH"+ timeStamp + ".stl");
 
         return stl;
     }

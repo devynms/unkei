@@ -28,21 +28,20 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class STLViewActivity extends Activity{
-    protected STLView stlView;
 
+    protected STLView stlView;
     private String fileToLoad;
 
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
-        String fileName = getIntent().getStringExtra(path);
-        if (fileName != null){
-            fileToLoad = fileName;
-        } else {
-            Log.d("File opener", "No intent data");
-            fileToLoad = "dial.stl"; //for testing
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            fileToLoad = extras.getString("file_path");
+        }
+        if (fileToLoad == null){
+            Log.e("File opener", "No intent data");
         }
         PackageManager manager = getPackageManager();
         ApplicationInfo appInfo = null;
@@ -67,7 +66,7 @@ public class STLViewActivity extends Activity{
         super.onResume();
         if (stlView != null) {
             STLRenderer.requestRedraw();
-            stlView.onResume();
+            stlView.onResume(); //why is there a recursive call here?
         }
     }
 
@@ -102,9 +101,8 @@ public class STLViewActivity extends Activity{
     }
 
     public void loadSTL(){
-        File baseDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         try {
-            Uri uri = Uri.fromFile(new File(baseDir + "/" + fileToLoad));
+            Uri uri = Uri.fromFile(new File(fileToLoad));
             setUpViews(uri);
         } catch (Exception e){
             Log.e("OnLoad", "Failed to load " + fileToLoad);
