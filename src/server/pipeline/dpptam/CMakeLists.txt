@@ -1,7 +1,7 @@
 
 
 cmake_minimum_required(VERSION 2.8.3)
-project(dpptam)
+project(unkei)
 add_definitions(-std=c++11 -Werror=return-type ${PCL_DEFINITIONS})
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake)
 set(CMAKE_BUILD_TYPE RelWithDebInfo)
@@ -78,8 +78,8 @@ link_directories(${PCL_LIBRARY_DIRS})
 ###########
 ## Build ##
 ###########
-add_executable(dpptam ${DENSE_HEADER_FILES} ${DENSE_SOURCE_FILES})
-target_link_libraries(dpptam ${OpenCV_LIBS} ${catkin_LIBRARIES})
+add_executable(unkei ${DENSE_HEADER_FILES} ${DENSE_SOURCE_FILES})
+target_link_libraries(unkei ${OpenCV_LIBS} ${catkin_LIBRARIES})
 
 add_executable(mesher ${MESHER_HEADER_FILES} ${MESHER_SOURCE_FILES})
 target_link_libraries(mesher ${OpenCV_LIBS} ${catkin_LIBRARIES})

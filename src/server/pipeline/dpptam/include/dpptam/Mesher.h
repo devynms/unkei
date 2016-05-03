@@ -22,6 +22,10 @@
 #include <pcl/pcl_exports.h>
 #include <pcl/PolygonMesh.h>
 #include <pcl/point_cloud.h>
+<<<<<<< HEAD:src/server/pipeline/DPPTAM/include/dpptam/Mesher.h
+#include <pcl/filters/statistical_outlier_removal.h>
+=======
+>>>>>>> 2eb9c0346d4d7b36aade87f3e607d8d0814d3485:src/server/pipeline/dpptam/include/dpptam/Mesher.h
 
 class Mesher {
 public:
@@ -52,9 +56,16 @@ public:
 
 protected:
     bool readPointsFromDir(const std::string& inputDir, pcl::PCLPointCloud2::Ptr cloud_blob);
+<<<<<<< HEAD:src/server/pipeline/DPPTAM/include/dpptam/Mesher.h
+    void estimateNormals(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, pcl::PointCloud<pcl::PointNormal>::Ptr cloud_with_normals, int nn);
+    void estimateNormalsMLS(pcl::PointCloud<pcl::PointXYZ>::Ptr inputPoints, pcl::PointCloud<pcl::PointNormal>::Ptr normals, float search_radius);
+    void filterCloudVoxels(pcl::PCLPointCloud2::Ptr cloud_blob, pcl::PCLPointCloud2::Ptr cloud_filtered, float leaf_size);
+    void filterCloudOutliers(pcl::PointCloud<pcl::PointXYZ>::Ptr input, pcl::PointCloud<pcl::PointXYZ>::Ptr filtered, int nn, float stdev);
+=======
     void estimateNormals(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, pcl::PointCloud<pcl::PointNormal>::Ptr cloud_with_normals);
     void estimateNormalsMLS(pcl::PointCloud<pcl::PointXYZ>::Ptr inputPoints, pcl::PointCloud<pcl::PointNormal>::Ptr normals);
     void filterCloud(pcl::PCLPointCloud2::Ptr cloud_blob, pcl::PCLPointCloud2::Ptr cloud_filtered, float leaf_size);
+>>>>>>> 2eb9c0346d4d7b36aade87f3e607d8d0814d3485:src/server/pipeline/dpptam/include/dpptam/Mesher.h
     void setGreedyTriangulationParams(pcl::GreedyProjectionTriangulation<pcl::PointNormal>::Ptr gp3);
 
     struct GreedyTriangulationParams _greedyParams;

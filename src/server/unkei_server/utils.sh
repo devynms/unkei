@@ -10,7 +10,7 @@ LaunchFile=$HOME$UnkeiRoot"/src/server/pipeline/DPPTAM/dpptam.launch"
 ImExt=".png"
 Rate=30
 
-_DpptamSourceFile=$HOME$UnkeiRoot"/src/server/pipeline/DPPTAM/devel/setup.bash"
+_DpptamSourceFile=$HOME$UnkeiRoot"/src/server/pipeline/dpptam/devel/setup.bash"
 #_BagSourceFile=$HOME"/workspaces/ros_catkin/src/BagFromImages/build/devel/setup.bash"
 _RosSourceFile="/opt/ros/indigo/setup.bash"
 SourceFiles=($_DpptamSourceFile $_BagSourceFile $_RosSourceFile)
