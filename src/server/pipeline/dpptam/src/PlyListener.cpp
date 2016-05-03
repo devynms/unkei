@@ -44,7 +44,7 @@ void ThreadPlyListener(PlyListener *pply_listener, DenseMapping *pdense_mapper, 
             if ((float)(clock() - pply_listener->tlast)/CLOCKS_PER_SEC > PLY_TIMEOUT_S && pply_listener->pcd_count > 0) {
                 tlast_lock.unlock();
                 pcd_lock.unlock();
-                std::string mesh_exec_path = "/home/acceber/workspaces/ros_catkin/devel/lib/dpptam/mesher";
+                std::string mesh_exec_path =  "/pipeline/dpptam/devel/lib/mesher";
                 if (execlp(mesh_exec_path.c_str(), mesh_exec_path.c_str(), pcd_dir.c_str(), mesh_file.c_str(), (char *)(NULL)) == -1) {
                     printf("Mesher process failed to execute.\n");
                 } else {
