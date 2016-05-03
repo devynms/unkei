@@ -84,8 +84,8 @@ vo_system::vo_system() {
     boost::filesystem::create_directory((ros::package::getPath("dpptam")+"/data/meshes").c_str());
 
     std::string pcd_dir = ros::package::getPath("dpptam")+"/data/clouds";
-    std::string mesh_file = ros::package::getPath("dpptam")+"/data/meshes/out.stl";
-    boost::thread thread_ply_listener(&ThreadPlyListener, &ply_listener, &dense_mapper, &semidense_mapper, pcd_dir, mesh_file);
+    std::string mesh_file_base = ros::package::getPath("dpptam")+"/data/meshes/outputMesh";
+    boost::thread thread_ply_listener(&ThreadPlyListener, &ply_listener, &dense_mapper, &semidense_mapper, pcd_dir, mesh_file_base);
     cout << "PlyListener thread launched!\n";
     
     cout << "***    DPPTAM is working     *** " <<  endl << endl;
