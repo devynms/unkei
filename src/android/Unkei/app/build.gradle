@@ -25,6 +25,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
     compile project(':openCVLibrary300')
-    compile files('libs/snakeyaml-1.18-SNAPSHOT-android.jar')
     compile files('libs/yamlbeans-1.09.jar')
 }
