@@ -3,18 +3,22 @@ import subprocess
 import rostopic
 import time
 import os
-import sys #sys.argv
+import sys
+
+dpptam="DPPTAM"
+if os.getcwd().find("josh") >= 0:
+    dpptam = "dpptam"
 
 UnkeiServerRoot = os.getcwd()
 ImageDir =  UnkeiServerRoot + '/images'
-BagFile =  UnkeiServerRoot + '/pipeline/scan.bag'
-LaunchFile =  UnkeiServerRoot + '/pipeline/DPPTAM/dpptam.launch'
-SourceFile =  UnkeiServerRoot + '/pipeline/DPPTAM/devel/setup.bash'
+BagFile =  UnkeiServerRoot + '/pipeline/'+dpptam+'/data/bags/scan.bag'
+LaunchFile =  UnkeiServerRoot + '/pipeline/'+dpptam+'/dpptam.launch'
+SourceFile =  UnkeiServerRoot + '/pipeline/'+dpptam+'/devel/setup.bash'
 
 def create_bag():
     try:
         rostopic.rosgraph.Master('/rostopic').getPid()
-        create = subprocess.Popen(['rosrun', 'bag_from_images', 'bag_from_images', ImageDir, '.png', '30', BagFile])#.wait()
+        create = subprocess.Popen(['rosrun', 'bag_from_images', 'bag_from_images', ImageDir, '.png', '30', BagFile]).wait()
     except socket.error:
         print "could not create bag file"
         #print 'trying again'
@@ -47,6 +51,8 @@ def launchROS():
         except socket.error:
             print "can't start ROS core"
             return False
+    time.sleep(2)
+    return checkROS()
 
 def startDPPTAM():
     try:
@@ -55,7 +61,7 @@ def startDPPTAM():
     except:
         raise rostopic.ROSTopicException("Can't launch ROS Master")
     else:
-        return launch
+        return True 
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
