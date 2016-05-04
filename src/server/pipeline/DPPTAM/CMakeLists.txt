@@ -2,7 +2,7 @@
 
 cmake_minimum_required(VERSION 2.8.3)
 project(dpptam)
-add_definitions(-std=c++11 -Werror=return-type ${PCL_DEFINITIONS})
+add_definitions(-std=c++11 -Werror=return-type -Wno-deprecated ${PCL_DEFINITIONS})
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake)
 set(CMAKE_BUILD_TYPE RelWithDebInfo)
 

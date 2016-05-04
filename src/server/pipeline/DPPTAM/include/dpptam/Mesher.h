@@ -22,6 +22,7 @@
 #include <pcl/pcl_exports.h>
 #include <pcl/PolygonMesh.h>
 #include <pcl/point_cloud.h>
+#include <pcl/filters/statistical_outlier_removal.h>
 
 class Mesher {
 public:
@@ -54,7 +55,8 @@ protected:
     bool readPointsFromDir(const std::string& inputDir, pcl::PCLPointCloud2::Ptr cloud_blob);
     void estimateNormals(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, pcl::PointCloud<pcl::PointNormal>::Ptr cloud_with_normals);
     void estimateNormalsMLS(pcl::PointCloud<pcl::PointXYZ>::Ptr inputPoints, pcl::PointCloud<pcl::PointNormal>::Ptr normals);
-    void filterCloud(pcl::PCLPointCloud2::Ptr cloud_blob, pcl::PCLPointCloud2::Ptr cloud_filtered, float leaf_size);
+    void filterCloudVoxels(pcl::PCLPointCloud2::Ptr cloud_blob, pcl::PCLPointCloud2::Ptr cloud_filtered, float leaf_size);
+    void filterCloudOutliers(pcl::PointCloud<pcl::PointXYZ>::Ptr input, pcl::PointCloud<pcl::PointXYZ>::Ptr filtered);
     void setGreedyTriangulationParams(pcl::GreedyProjectionTriangulation<pcl::PointNormal>::Ptr gp3);
 
     struct GreedyTriangulationParams _greedyParams;

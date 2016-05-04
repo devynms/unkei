@@ -24,6 +24,8 @@ void getMesherExecPath(std::string& path) {
     path = std::string(cwd);
     free(cwd);
 
+    printf("Current Working directory is: %s\n", path.c_str());
+
     if (path.find("DPPTAM") != std::string::npos) {
         //nop
     } else if (path.find("pipeline") != std::string::npos) {
@@ -70,7 +72,7 @@ void ThreadPlyListener(PlyListener *pply_listener, DenseMapping *pdense_mapper, 
                 std::string mesh_exec_path;//= str_cwd + "/pipeline/DPPTAM/devel/lib/dpptam/mesher";
                 getMesherExecPath(mesh_exec_path);
                 if (execlp(mesh_exec_path.c_str(), mesh_exec_path.c_str(), pcd_dir.c_str(), mesh_file.c_str(), (char *)(NULL)) == -1) {
-                    printf("Mesher process failed to execute.\n");
+                    printf("PlyListener: Mesher process failed to execute.\n");
                 } else {
                     cout << "PlyListener: Generating mesh from pcd files!\n";
                 }
@@ -110,13 +112,14 @@ void thread_ply_listener_map(PlyListener *pply_listener, SemiDenseMapping *psemi
     {
         boost::unique_lock<boost::mutex> lock(psemidense_mapper->ply_mutex);
         if (psemidense_mapper->ply_ready) {
+            psemidense_mapper->ply_ready = false;
+            lock.unlock();
             cout << "PlyListener.thread_ply_listener_map: converting new ply file\n"; 
             thread_ply_listener_convert_ply2pcd_file(psemidense_mapper->ply_file, pply_listener);
-            psemidense_mapper->ply_ready = false;
         } else {
+            lock.unlock();
             cout << "PlyListener.thread_ply_listener_map: nothing to convert.\n"; 
         }
-        lock.unlock();
     }
     cout << "PlyListener.thread_ply_listener_map: exiting\n"; 
 }
@@ -146,13 +149,14 @@ void thread_ply_listener_sup(PlyListener *pply_listener, DenseMapping *pdense_ma
     {
         boost::unique_lock<boost::mutex> lock(pdense_mapper->ply_mutex);
         if (pdense_mapper->ply_ready) {
+            pdense_mapper->ply_ready = false;
+            lock.unlock();
             cout << "PlyListener.thread_ply_listener_sup: converting new ply file\n"; 
             thread_ply_listener_convert_ply2pcd_file(pdense_mapper->ply_file, pply_listener);
-            pdense_mapper->ply_ready = false;
         } else {
+            lock.unlock();
             cout << "PlyListener.thread_ply_listener_sup: nothing to convert.\n"; 
         }
-        lock.unlock();
     }
     cout << "PlyListener.thread_ply_listener_sup: exiting\n"; 
 }
