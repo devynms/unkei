@@ -24,19 +24,19 @@ void getMesherExecPath(std::string& path) {
     path = std::string(cwd);
     free(cwd);
 
-    if (path.find("DPPTAM") != std::string::npos) {
+    if (path.find("dpptam") != std::string::npos) {
         //nop
     } else if (path.find("pipeline") != std::string::npos) {
-        path += "/DPPTAM";
+        path += "/dpptam";
     } else if (path.find("server") != std::string::npos) {
-        path += "/pipeline/DPPTAM";
+        path += "/pipeline/dpptam";
     } else if (path.find("src") != std::string::npos) {
-        path += "/server/pipeline/DPPTAM";
+        path += "/server/pipeline/dpptam";
     } else if (path.find("unkei") != std::string::npos) {
-        path += "/src/server/pipeline/DPPTAM";
+        path += "/src/server/pipeline/dpptam";
     } else {
         printf("WARNING: current working directory not recognized!\n");
-        path = "/home/acceber/projects/eecs395/unkei/src/server/pipeline/DPPTAM";
+        path = "/home/acceber/projects/eecs395/unkei/src/server/pipeline/dpptam";
     }
     path += "/devel/lib/dpptam/mesher";
 }

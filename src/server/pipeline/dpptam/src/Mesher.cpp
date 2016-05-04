@@ -55,14 +55,22 @@ bool Mesher::readPointsFromDir(const std::string& inputDir, pcl::PCLPointCloud2:
     }
 }
 
-void Mesher::filterCloud(pcl::PCLPointCloud2::Ptr cloud_blob, pcl::PCLPointCloud2::Ptr cloud_blob_filtered, float leaf_size) {
+void Mesher::filterCloudVoxels(pcl::PCLPointCloud2::Ptr cloud_blob, pcl::PCLPointCloud2::Ptr cloud_blob_filtered, float leaf_size) {
     pcl::VoxelGrid<pcl::PCLPointCloud2> filter;
     filter.setInputCloud(cloud_blob);
     filter.setLeafSize(leaf_size, leaf_size, leaf_size);
     filter.filter(*cloud_blob_filtered);
 }
 
-void Mesher::estimateNormals(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, pcl::PointCloud<pcl::PointNormal>::Ptr cloud_with_normals) {
+void Mesher::filterCloudOutliers(pcl::PointCloud<pcl::PointXYZ>::Ptr input, pcl::PointCloud<pcl::PointXYZ>::Ptr filtered, int nn, float stddev) {
+    pcl::StatisticalOutlierRemoval<pcl::PointXYZ> sor;
+    sor.setInputCloud(input);
+    sor.setMeanK(nn);
+    sor.setStddevMulThresh(stddev);
+    sor.filter(*filtered);
+}
+
+void Mesher::estimateNormals(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, pcl::PointCloud<pcl::PointNormal>::Ptr cloud_with_normals, int nn) {
     pcl::PointCloud<pcl::Normal>::Ptr normals (new pcl::PointCloud<pcl::Normal>);
     pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> n;
     
@@ -70,13 +78,13 @@ void Mesher::estimateNormals(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, pcl::Poi
     tree->setInputCloud (cloud);
     n.setInputCloud (cloud);
     n.setSearchMethod (tree);
-    n.setKSearch (20);
+    n.setKSearch (nn);
     n.compute (*normals);
 
     pcl::concatenateFields (*cloud, *normals, *cloud_with_normals);
 }
 
-void Mesher::estimateNormalsMLS(pcl::PointCloud<pcl::PointXYZ>::Ptr inputPoints, pcl::PointCloud<pcl::PointNormal>::Ptr normals) {
+void Mesher::estimateNormalsMLS(pcl::PointCloud<pcl::PointXYZ>::Ptr inputPoints, pcl::PointCloud<pcl::PointNormal>::Ptr normals, float search_radius) {
 
     pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>);
 
@@ -86,7 +94,7 @@ void Mesher::estimateNormalsMLS(pcl::PointCloud<pcl::PointXYZ>::Ptr inputPoints,
     mls.setInputCloud(inputPoints);
     mls.setPolynomialFit(true);
     mls.setSearchMethod(tree);
-    mls.setSearchRadius(0.03);
+    mls.setSearchRadius(search_radius);
 
     mls.process(*normals);
 }
@@ -104,12 +112,6 @@ void Mesher::setGreedyTriangulationParams(pcl::GreedyProjectionTriangulation<pcl
 bool Mesher::reconstruct(const char *inputdir) {//, const char *outputfile) {
     std::string inputDir(inputdir);
     
-    //std::string outputFile(outputfile);
-    //if (outputFile.find(".stl") == std::string::npos) {
-    //    printf("output file must be in .stl format!\n");
-    //    return false;
-    //}
-   
     // read points from file
     pcl::PCLPointCloud2::Ptr cloud_blob(new pcl::PCLPointCloud2());
     if (!readPointsFromDir(inputDir, cloud_blob)) {
@@ -121,21 +123,22 @@ bool Mesher::reconstruct(const char *inputdir) {//, const char *outputfile) {
 
     // try downsampling the cloud by taking the centroids of voxels
     pcl::PCLPointCloud2::Ptr cloud_blob_filtered(new pcl::PCLPointCloud2());
-    filterCloud(cloud_blob, cloud_blob_filtered, 0.01f);
-    
-    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered(new pcl::PointCloud<pcl::PointXYZ>);
-    pcl::fromPCLPointCloud2(*cloud_blob_filtered, *cloud_filtered);
-    DEBUG1("Finished filtering the point cloud. Cloud now has %d points.\n", (int)(cloud_filtered->size()))
+    filterCloudVoxels(cloud_blob, cloud_blob_filtered, 0.01f);
+   
+    // convert PointCloud2 to PointCloud
+    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered_voxel(new pcl::PointCloud<pcl::PointXYZ>);
+    pcl::fromPCLPointCloud2(*cloud_blob_filtered, *cloud_filtered_voxel);
+    DEBUG1("Finished voxel-filtering the point cloud. Cloud now has %d points.\n", (int)(cloud_filtered_voxel->size()))
 
-    //if (cloud_filtered->height == 1) printf("CLOUD IS UNORGANIZED.\n");
-    //else printf("CLOUD IS ORGANIZED AND HAS %d COLUMNS.\n", cloud_filtered->height);
-    //return 0;
-    // CLOUD IS UNORGANIZED: cannot use bilateral filter, etc.
+    // try removing outliers: points that are more than N std. deviations away from given avg. distance
+    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered(new pcl::PointCloud<pcl::PointXYZ>);
+    filterCloudOutliers(cloud_filtered_voxel, cloud_filtered, 100, 2.0);
+    DEBUG1("Finished outlier-filtering the point cloud. Cloud now has %d points.\n", (int)(cloud_filtered->size()))
 
     // estimate surface normals 
     pcl::PointCloud<pcl::PointNormal>::Ptr cloud_with_normals (new pcl::PointCloud<pcl::PointNormal>);
-    //estimateNormals(cloud_filtered, cloud_with_normals);
-    estimateNormalsMLS(cloud_filtered, cloud_with_normals);
+    //estimateNormals(cloud_filtered, cloud_with_normals, 20);
+    estimateNormalsMLS(cloud_filtered, cloud_with_normals, 0.03);
     DEBUG("Finished estimating normals.\n")
     
     //create search tree

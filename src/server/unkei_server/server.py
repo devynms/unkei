@@ -3,7 +3,7 @@ import os
 import struct
 # import pdb
 # import subprocess
-# import time
+import time
 # import rostopic
 from image_converter import img_converter
 from purge import purge
@@ -42,10 +42,10 @@ def main():
         img_converter('stored.mp4')
         print 'checking ROS...'
         create_bag()
-        startDPPTAM()
+        #startDPPTAM()
         play_bag()
         print 'creating .stl file'
-        # time.sleep(30)
+        time.sleep(180)
         stl = open(STL_OUTPUT, 'rb')
         size = os.fstat(stl.fileno()).st_size
         print 'connecting to device'

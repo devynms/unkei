@@ -1,12 +1,12 @@
 #! /bin/bash
 
 # project directories
-UnkeiRoot="/projects/eecs395/unkei"
+UnkeiRoot="/Workspace/unkei"
 ImageDir=$HOME$UnkeiRoot"/src/server/3DScanner_Server/images"
-BagFile=$HOME"/workspaces/ros_catkin/src/dpptam/data/lab_unizar.bag"
+#BagFile=$HOME"/workspaces/ros_catkin/src/dpptam/data/lab_unizar.bag"
 #LaunchFile=$HOME"/workspaces/ros_catkin/src/dpptam/dpptam.launch"
-#BagFile=$HOME$UnkeiRoot"/src/server/pipeline/DPPTAM/data/example.bag"
-LaunchFile=$HOME$UnkeiRoot"/src/server/pipeline/DPPTAM/dpptam.launch"
+BagFile=$HOME$UnkeiRoot"/src/server/pipeline/dpptam/data/scan.bag"
+LaunchFile=$HOME$UnkeiRoot"/src/server/pipeline/dpptam/dpptam.launch"
 ImExt=".png"
 Rate=30
 

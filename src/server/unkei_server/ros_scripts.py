@@ -50,7 +50,7 @@ def launchROS():
 def startDPPTAM():
     try:
         print "launching", LaunchFile
-        subprocess.Popen(['rosrun', 'dpptam', 'dpptam'])#, stdin=subprocess.PIPE, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+        subprocess.Popen(['rosrun', 'unkei', 'unkei'])#, stdin=subprocess.PIPE, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
     except:
         raise rostopic.ROSTopicException("Can't launch ROS Master")
     else:

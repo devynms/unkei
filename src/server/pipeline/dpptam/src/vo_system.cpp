@@ -27,7 +27,7 @@
 vo_system::vo_system() {
     ///vo_system launch the three threads, tracking, semidense mapping and dense mapping (3D superpixels)
 
-    cv::FileStorage  fs2( (ros::package::getPath("dpptam")+"/src/data.yml").c_str(), cv::FileStorage::READ);
+    cv::FileStorage  fs2( (ros::package::getPath("unkei")+"/src/data.yml").c_str(), cv::FileStorage::READ);
 
     std::string camera_path;
     fs2["camera_path"] >> camera_path;
@@ -78,13 +78,13 @@ vo_system::vo_system() {
     // KEYWORD
     // launch monitor ply to pcd thread
 
-    boost::filesystem::remove_all((ros::package::getPath("dpptam")+"/data/clouds").c_str());
-    boost::filesystem::create_directory((ros::package::getPath("dpptam")+"/data/clouds").c_str());
-    boost::filesystem::remove_all((ros::package::getPath("dpptam")+"/data/meshes").c_str());
-    boost::filesystem::create_directory((ros::package::getPath("dpptam")+"/data/meshes").c_str());
+    boost::filesystem::remove_all((ros::package::getPath("unkei")+"/data/clouds").c_str());
+    boost::filesystem::create_directory((ros::package::getPath("unkei")+"/data/clouds").c_str());
+    boost::filesystem::remove_all((ros::package::getPath("unkei")+"/data/meshes").c_str());
+    boost::filesystem::create_directory((ros::package::getPath("unkei")+"/data/meshes").c_str());
 
-    std::string pcd_dir = ros::package::getPath("dpptam")+"/data/clouds";
-    std::string mesh_file_base = ros::package::getPath("dpptam")+"/data/meshes/outputMesh";
+    std::string pcd_dir = ros::package::getPath("unkei")+"/data/clouds";
+    std::string mesh_file_base = ros::package::getPath("unkei")+"/data/meshes/outputMesh";
     boost::thread thread_ply_listener(&ThreadPlyListener, &ply_listener, &dense_mapper, &semidense_mapper, pcd_dir, mesh_file_base);
     cout << "PlyListener thread launched!\n";
     
